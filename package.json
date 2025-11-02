@@ -1,0 +1,16 @@
+{
+  "name": "redmond-tech",
+  "version": "1.0.0",
+  "description": "Father John Redmond Tech Team Website",
+  "main": "backend/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "fjr-tech",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "node": "^25.1.0",
+    "nodemon": "^3.1.10"
+  }
+}
