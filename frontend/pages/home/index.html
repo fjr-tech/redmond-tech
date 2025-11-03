@@ -6,16 +6,7 @@
     <title>Document</title>
 </head>
 <style>
-    .title-text {
-        font-size: 100px;
-        text-align: center;
-        font-family: 'Courier New', Courier, monospace;
-    }
-    .text{
-        font-size: 30px;
-        text-align: left;
-        font-family: 'Courier New', Courier, monospace;
-    }
+    @import url('./index.css');
 </style>
 <body>
     <h1 class="title-text">Father John Redmond Tech Team</h1>
@@ -27,8 +18,20 @@
     <h2 style="font-size: 70px;
                font-family: 'Courier New', Courier, monospace;
                margin-left: 425px;">About us</h2>
-    <p class="text">
+    <p class="Ltext">
         The Father John Redmond Tech Team is a student-run team that sets up and runs audio, visual, and computer systems for school events.
         We have run events such as, Open House, the annual Christmas Concert, Kaleidoscope, and many more.</p>
+
+<div class="card-container">
+    <div class="card" onclick="goToPage('')">
+      <h3 class="Ctext">Audio Suite</h3>
+      <p class="Ctext">Play around with audio</p>
+    </div>
+
+    <div class="card" onclick="goToPage('')">
+      <h3 class="Ctext">File Sharing</h3>
+      <p class="Ctext">Share and store your file</p>
+    </div>
+</div>
 </body>
 </html>
