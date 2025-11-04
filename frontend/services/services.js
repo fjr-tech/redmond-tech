@@ -1,0 +1,7 @@
+/*
+DO NOT ADD YOUR CODE TO THIS FILE 
+
+Put reusable JS services in this folder
+Ex. server request template
+
+*/

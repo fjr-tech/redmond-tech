@@ -1,0 +1,7 @@
+/*
+DO NOT ADD YOUR CODE TO THIS FILE 
+
+Put reusable HTML components in this folder
+Ex. reusable headers
+
+*/
