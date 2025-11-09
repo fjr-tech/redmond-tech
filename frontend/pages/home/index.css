@@ -1,3 +1,5 @@
+
+
 .title-text {
 	font-size: 100px;
 	text-align: center;
@@ -7,38 +9,4 @@
 	font-size: 30px;
 	text-align: left;
 	font-family: 'Courier New', Courier, monospace;
-}
-.Ctext{
-	font-size: 30px;
-	text-align: center;
-	font-family: 'Courier New', Courier, monospace;
-}
-
-.card-container {
-	display: flex;
-	gap: 20px;
-	justify-content: center;
-	flex-wrap: wrap;
-}
-
-.card {
-	background: white;
-	border: 1px solid #ccc;
-	border-radius: 15px;
-	padding: 20px;
-	width: 250px;
-	text-align: center;
-	box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-	transition: transform 0.2s, box-shadow 0.2s;
-	cursor: pointer;
-}
-
-.card:hover {
-	transform: scale(1.05);
-	box-shadow: 4px 4px 15px rgba(0,0,0,0.2);
-}
-
-.card img {
-	width: 100%;
-	border-radius: 10px;
 }
