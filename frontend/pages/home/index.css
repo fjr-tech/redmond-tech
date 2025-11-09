@@ -1,12 +1,5 @@
-
-
-.title-text {
-	font-size: 100px;
+p{
+	font-size: 20px;
 	text-align: center;
-	font-family: 'Courier New', Courier, monospace;
-}
-.Ltext{
-	font-size: 30px;
-	text-align: left;
 	font-family: 'Courier New', Courier, monospace;
 }

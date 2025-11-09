@@ -7,68 +7,55 @@
 
     <!-- External CSS -->
     <link rel="stylesheet" href="/home/index.css">
-    <link rel="stylesheet" href="/home/card.css">
 
     <link rel="stylesheet" href="/components/universal_styling.css">
 
 
     <script src="/components/nav_bar.js"></script>
+    <script src="/components/card.js"></script>
 </head>
 <body>
     <page-nav></page-nav>
-        
-    <h1 class="title-text">Father John Redmond Tech Team</h1>
 
-
-    <h2 
-        style="
-            font-size: 70px;
-            font-family: 'Courier New', Courier, monospace;
-            margin-left: 425px;
-        "
-    >
-        About Us
-    </h2>
-
-    <p class="Ltext">
+    <!-- <p>
         The Father John Redmond Tech Team is a student-run team that sets up and runs audio, visual, 
         and computer systems for school events. We have run events such as Open House, the annual 
         Christmas Concert, Kaleidoscope, and many more.
-    </p>
+    </p> -->
 
-    <div class="card-container">
-        <div class="card" onclick="goToPage('../audio_suite/audio_suite.html')">
-            <h3 class="Ctext">Audio Suite</h3>
-            <p class="Ctext">Play around with audio</p>
-        </div>
 
-        <div class="card" onclick="goToPage('../file_sharing/file_share.html')">
-            <h3 class="Ctext">File Sharing</h3>
-            <p class="Ctext">Share and store your file</p>
-        </div>
-    </div>
-
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error, eveniet totam. Eaque unde laboriosam itaque ut quas velit nesciunt, qui aliquid, nostrum aut enim deserunt voluptatem ducimus voluptates dignissimos debitis.</p>
-
+    <card-container>
+        <page-card link="/audio_suite/audio_suite.html">
+            <h1>About</h1>
+            <img src="/assets/mixer.jpg" alt="">
+            <p>Description text here</p>
+        </page-card>
+        <page-card>
+            <h1>About</h1>
+            <img src="/assets/mixer.jpg" alt="">
+            <p>Description text here</p>
+        </page-card>
+        <page-card>
+            <h1>About</h1>
+            <img src="/assets/mixer.jpg" alt="">
+            <p>Description text here</p>
+        </page-card>
+        <page-card>
+            <h1>About</h1>
+            <img src="/assets/mixer.jpg" alt="">
+            <p>Description text here</p>
+        </page-card>
+        <page-card>
+            <h1>About</h1>
+            <img src="/assets/mixer.jpg" alt="">
+            <p>Description text here</p>
+        </page-card>
+        <page-card>
+            <h1>About</h1>
+            <img src="/assets/mixer.jpg" alt="">
+            <p>Description text here</p>
+        </page-card>
+    </card-container>
 
     <script src="/pages/home/index.js"></script>
 </body>

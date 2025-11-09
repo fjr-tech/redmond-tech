@@ -1,0 +1,46 @@
+<style>
+    ::slotted(img) {
+        width: 100%;
+        border-radius: 10px;
+        
+    }
+    ::slotted(h1) {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    ::slotted(p) {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 16px;
+        font-weight: normal;
+    }
+
+    * {
+        user-select: none;
+    }
+
+    .card {
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        padding: 20px;
+        width: 250px;
+        height: 300px;
+        text-align: center;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+        cursor: pointer;
+    }
+
+    .card:hover {
+        transform: scale(1.01);
+        box-shadow: 4px 4px 15px rgba(0,0,0,0.2);
+    }
+</style>
+
+
+<div class="card">
+    <slot>
+
+    </slot>
+</div>
