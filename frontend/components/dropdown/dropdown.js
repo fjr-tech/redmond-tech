@@ -40,6 +40,8 @@ class DropdownMenu extends HTMLElement {
         dropdown_menu.style.top = `${menuY}px`;
         dropdown_menu.style.left = `${menuX}px`;
 
+        dropdown_menu.style.maxWidth = `${controller.getBoundingClientRect().width}px`;
+
 
         // Change controller text
         controller.innerText = `▼ ${this.desc}`;
