@@ -21,11 +21,12 @@ class NavBar extends HTMLElement {
 
     // when element is added to DOM
     async connectedCallback() {
-        const response = await fetch('/components/nav_bar.html');
+        const response = await fetch('/components/nav_bar/nav_bar.html');
         const html = await response.text(); // use text method for HTML
-
         this.shadowRoot.innerHTML = html;
 
+        // Once this js file loads, the HTML dropdown elements get updated
+        await import("/components/dropdown/dropdown.js");
 
         // Click on main bar to return to home
         this.shadowRoot.addEventListener('click', (event) => {

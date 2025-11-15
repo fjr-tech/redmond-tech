@@ -5,7 +5,7 @@ class Card extends HTMLElement {
     }
 
     async connectedCallback() {
-        const res = await fetch('/components/card.html');
+        const res = await fetch('/components/card/card.html');
         const html = await res.text();
 
         this.shadowRoot.innerHTML = html;
@@ -27,7 +27,7 @@ class CardContainer extends HTMLElement {
     }
 
     async connectedCallback() {
-        const res = await fetch('/components/card_container.html');
+        const res = await fetch('/components/card/card_container.html');
         const html = await res.text();
 
         this.shadowRoot.innerHTML = html;

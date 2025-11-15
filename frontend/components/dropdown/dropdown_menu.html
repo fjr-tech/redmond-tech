@@ -1,0 +1,58 @@
+<style>
+    .dropdown_menu_controller {
+        display: flex;
+        box-sizing: border-box;
+        width: 100%;
+        height: 50px;
+
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 16px;
+        justify-content: center;
+        align-items: center;
+        
+        user-select: none;
+        
+        cursor: pointer;
+    }
+
+    .dropdown_menu_controller:hover {
+        text-decoration: underline;
+        background-color: rgba(255, 255, 255, 0.95);
+        border: 1px solid #00469c;
+    }
+
+    
+    /* Styling for the menu itself */
+    .dropdown_menu {
+        /* Initially not visible */
+        display: none;
+
+        flex-direction: column;
+        position: fixed;
+
+        top: 0;
+        left: 0;
+        
+        box-sizing: border-box;
+        width: 250px;
+    }
+
+    /* styling for elements within the menu */
+    ::slotted(*) {
+        box-sizing: border-box;
+        user-select: none;
+
+        flex: 0 0 50px;
+        width: 100%;
+
+        background-color: rgba(255, 255, 255, 0.9);
+    }
+
+</style>
+<div class="dropdown_menu_controller"></div>
+<div class="dropdown_menu">
+    <!-- use slots so HTML elements can be passed into the custom dropdown -->
+    <slot>
+        
+    </slot>
+</div>

@@ -21,7 +21,6 @@
         width: 100%;
         height: 150px;
 
-        box-sizing: border-box;
         border-bottom: 1px solid black;
     }
 
@@ -93,6 +92,8 @@
 
     .dropdown {
         flex: 2;
+        outline: none;
+        border: none;
     }
 
     .quick_link {
@@ -107,7 +108,14 @@
         <img id="logo" src="/assets/tech_logo_hd.png" alt="">
     </div>
     <nav class="row" id="links">
-        <a class="dropdown" href="">About</a>
+        <dropdown-menu desc="Tools" openFrom="bottom" class="dropdown">
+            <dropdown-element link="/"><p>hello world</p></dropdown-element>
+            <dropdown-element link="/"><p>hello world</p></dropdown-element>
+            <dropdown-menu desc="Tools" openFrom="right" class="dropdown">
+                    <dropdown-element link="/"><p>hello world</p></dropdown-element>
+                    <dropdown-element link="/"><p>hello world</p></dropdown-element>
+                </dropdown-menu>
+        </dropdown-menu>
         <a class="quick_link" href="">About</a>
         <a class="quick_link" href="">About</a>
         <a class="quick_link" href="">About</a>
