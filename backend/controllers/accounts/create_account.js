@@ -5,12 +5,18 @@
     model - interact with db
 */
 
+const createAccount = require('../../services/accounts/create_account.js');
 
 module.exports = async (req, res) => {
     try {
+        const { username, password } = req.body;
 
+        await createAccount(username, password);
+
+        res.status(201).json({ message: "Account created!" });
 
     } catch (error) {
-        res.status(500).json({ message: `Server error: ${error.message}` });
+        const status = error.status || 500;
+        res.status(status).json({ message: `Server error: ${error.message}` });
     }
 }
