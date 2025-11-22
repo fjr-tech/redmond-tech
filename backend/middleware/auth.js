@@ -9,6 +9,6 @@ module.exports = (req, res) => {
     if (isValidSessionToken(session_token)) {
         next();
     } else {
-        res.status(401).json({ message: "not authenticated" })
+        res.status(401).json({ message: "not authenticated" });
     }
 }
