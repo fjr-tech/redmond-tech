@@ -8,6 +8,25 @@ class AccountsModel {
         await db.query(sql, [username, password]);
     }
 
+    static async login(username, session_token, expirationTimeStamp) {
+        const sql = `UPDATE accounts SET session_token = ?, session_expires_at = ? WHERE username = ?`;
+
+        await db.query(sql, [session_token, expirationTimeStamp, username]);
+    }
+
+    static async logout(username) {
+        
+    }
+
+    static async isValidUsernameAndPassword(username, password) {
+        const sql = `SELECT * FROM ACCOUNTS WHERE username = ? AND password = ?`;
+        
+        const [rows] = await db.query(sql, [username, password]);
+
+
+        return rows.length > 0;
+    }
+
     static async getAccountIDByUsername(username) {
         const sql = `SELECT id FROM accounts WHERE (username) = (?)`;
 

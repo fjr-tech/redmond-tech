@@ -1,4 +1,4 @@
-const { accounts: { credential_specs } } = require('../config/config.json');
+const { accounts: { credential_specs } } = require('../../config/config.json');
 
 function validateUsername(username) {
     if (typeof username !== 'string') return false;

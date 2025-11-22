@@ -16,7 +16,11 @@
                     "chars": "1234567890",
                     "instances": 1
                 }
-            ]
+            ],
+
+
+            "session_token_len": 32,
+            "session_token_duration": 7200000
 
 
         }

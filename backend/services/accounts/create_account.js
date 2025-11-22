@@ -1,5 +1,5 @@
 const { getAccountIDByUsername, createAccount } = require('../../models/accounts.js');
-const { validateUsername, validatePassword } = require('../../utils/validateCredentialSpecs.js')
+const { validateUsername, validatePassword } = require('../../utils/accounts/validate_credential_specs.js')
 
 module.exports = async (username, password) => {
     // Validate username & password
