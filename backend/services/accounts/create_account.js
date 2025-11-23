@@ -1,4 +1,4 @@
-const { getAccountIDByUsername, createAccount } = require('../../models/accounts.js');
+const AccountsModel = require('../../models/accounts.js');
 const { validateUsername, validatePassword } = require('../../utils/accounts/validate_credential_specs.js')
 
 module.exports = async (username, password) => {
@@ -9,12 +9,12 @@ module.exports = async (username, password) => {
         throw err;
     }
 
-    if (await getAccountIDByUsername(username)) {
+    if (await AccountsModel.getAccountIDByUsername(username)) {
         const err = new Error("Account already exists");
         err.status = 409;
         throw err;
     }
 
-    createAccount(username, password);
+    await AccountsModel.createAccount(username, password);
 
 }

@@ -8,10 +8,12 @@ class AccountsModel {
         await db.query(sql, [username, password]);
     }
 
-    static async login(username, session_token, expirationTimeStamp) {
-        const sql = `UPDATE accounts SET session_token = ?, session_expires_at = ? WHERE username = ?`;
+    static async login(username, session_token, created_at, expires_at) {
+        const sql = `INSERT INTO sessions (user_id, token, created_at, expires_at) VALUES (?, ?, ?, ?)`;
 
-        await db.query(sql, [session_token, expirationTimeStamp, username]);
+        const user_id = await this.getAccountIDByUsername(username);
+
+        await db.query(sql, [user_id, session_token, created_at, expires_at]);
     }
 
     static async logout(username) {
@@ -19,19 +21,24 @@ class AccountsModel {
     }
 
     static async isValidUsernameAndPassword(username, password) {
-        const sql = `SELECT * FROM ACCOUNTS WHERE username = ? AND password = ?`;
+        const sql = `SELECT * FROM accounts WHERE username = ? AND password = ?`;
         
         const [rows] = await db.query(sql, [username, password]);
 
         return rows.length > 0;
     }
 
-    static async isValidSessionToken(session_token) {
-        const sql = `SELECT * FROM ACCOUNTS WHERE session_token = ?`;
+    static async getSession(session_token) {
+        const sql = `SELECT * FROM sessions WHERE token = ?`;
 
         const [rows] = await db.query(sql, [session_token]);
 
-        return rows.length > 0;
+        return rows?.[0];
+    }
+
+    static async isValidSessionToken(session_token) {
+        const session = await this.getSession(session_token);
+        return !!session;
     }
 
     static async getAccountIDByUsername(username) {
@@ -43,6 +50,7 @@ class AccountsModel {
 
         using [rows] sets the first element of the arr to const rows
         */
+       
         const [rows] = await db.query(sql, [username]);
         
         // rows[0] contains id property only
@@ -51,3 +59,5 @@ class AccountsModel {
 }
 
 module.exports = AccountsModel;
+
+// Always import the whole class to keep this keyword bound to class

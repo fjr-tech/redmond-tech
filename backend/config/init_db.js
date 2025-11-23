@@ -25,6 +25,11 @@ require('dotenv').config();
         const accountsSchema = fs.readFileSync(accountsSchemaPath, 'utf8');
         await db.query(accountsSchema);
 
+        // Set up table for sessions
+        const sessionsSchemaPath = path.join(__dirname, '../schemas/sessions.sql');
+        const sessionsSchema = fs.readFileSync(sessionsSchemaPath, 'utf8');
+        await db.query(sessionsSchema);
+
         // Close connection
         console.log(`Database '${DB_NAME}' initialised successfully.`);
         await db.end(); // Close the connection

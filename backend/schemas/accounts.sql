@@ -3,10 +3,5 @@ CREATE TABLE IF NOT EXISTS accounts (
     username VARCHAR(24) NOT NULL UNIQUE,
     `password` VARCHAR(24) NOT NULL,
 
-    session_token VARCHAR(255) UNIQUE,
-    session_expires_at TIMESTAMP,
-
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-
--- limitation: only one session per user

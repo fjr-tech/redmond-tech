@@ -17,3 +17,6 @@ const frontend = require('./routes/frontend/frontend.js');
 app.use('/', frontend);
 
 module.exports = app;
+
+// CRON
+require('./cron/master_cron.js');
