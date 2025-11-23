@@ -16,8 +16,10 @@ class AccountsModel {
         await db.query(sql, [user_id, session_token, created_at, expires_at]);
     }
 
-    static async logout(username) {
-        
+    static async logout(id) {
+        const sql = `DELETE FROM sessions WHERE user_id = ?`;
+
+        await db.query(sql, [id]);
     }
 
     static async isValidUsernameAndPassword(username, password) {
