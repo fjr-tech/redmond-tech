@@ -1,0 +1,28 @@
+{
+    "accounts": {
+        "credential_specs": {
+            "username_min_len": 4,
+            "username_max_len": 20,
+            "password_min_len": 8,
+            "password_max_len": 20,
+            "valid_chars": "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890!@#$%^&*()-=_+[]\\;',./{}|:\"<>?",
+
+            "must_include": [
+                {
+                    "chars": "QWERTYUIOPASDFGHJKLZXCVBNM",
+                    "instances": 1
+                },
+                {
+                    "chars": "1234567890",
+                    "instances": 1
+                }
+            ],
+
+
+            "session_token_len": 32,
+            "session_token_duration": 7200000
+
+
+        }
+    }
+}
