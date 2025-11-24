@@ -1,0 +1,1 @@
+This folder contains migration scripts for updating production code

@@ -2,10 +2,12 @@
 const db = require('../config/db.js');
 
 class AccountsModel {
-    static async createAccount(username, password) {
-        const sql = `INSERT INTO accounts (username, password) VALUES (?, ?)`;
+    static async createAccount(username, password, config) {
+        const permission_level = config?.permission_level || 1; // 1 = default user
 
-        await db.query(sql, [username, password]);
+        const sql = `INSERT INTO accounts (username, password, permission_level) VALUES (?, ?, ?)`;
+
+        await db.query(sql, [username, password, permission_level]);
     }
 
     static async login(username, session_token, created_at, expires_at) {
@@ -35,7 +37,25 @@ class AccountsModel {
 
         const [rows] = await db.query(sql, [session_token]);
 
-        return rows?.[0];
+        return rows?.[0] || null;
+    }
+
+    static async getPermissionLevelByID(id) {
+        const sql = `SELECT permission_level FROM accounts WHERE id = ?`;
+
+        const [rows] = await db.query(sql, [id]);
+
+        return rows?.[0] || null;
+    }
+
+    static async getPermissionLevelBySession(session_token) {
+        const session = await this.getSession(session_token);
+        if (!session) return;
+
+        const user_id = session.user_id;
+
+        return await this.getPermissionLevelByID(user_id);
+
     }
 
     static async isValidSessionToken(session_token) {

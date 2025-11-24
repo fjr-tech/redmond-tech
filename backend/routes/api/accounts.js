@@ -11,6 +11,6 @@ const login = require('../../controllers/accounts/login.js');
 router.post('/login', login);
 
 const logout = require('../../controllers/accounts/logout.js');
-router.post('/logout', auth, logout); // protected
+router.post('/logout', auth(), logout); // protected
 
 module.exports = router;

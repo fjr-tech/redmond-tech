@@ -3,5 +3,7 @@ CREATE TABLE IF NOT EXISTS accounts (
     username VARCHAR(24) NOT NULL UNIQUE,
     `password` VARCHAR(24) NOT NULL,
 
+    permission_level TINYINT NOT NULL DEFAULT 1,
+
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
