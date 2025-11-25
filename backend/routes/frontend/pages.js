@@ -14,19 +14,19 @@ router.get('/', (req, res) => {
 router.get('/login', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../../../frontend/pages/public/login/login.html'))
 });
+router.get('/sign_up', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../../../frontend/pages/public/sign_up/sign_up.html'))
+});
 
 // All routes after this require an account
 router.use(auth(0)); // must be suspended or higher
 
 // Account folder
-router.get('/account/dashboard', (req, res) => {
+router.get('/dashboard', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../../../frontend/pages/account/dashboard/dashboard.html'))
 });
-router.get('/account/logout', (req, res) => {
+router.get('/logout', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../../../frontend/pages/account/logout/logout.html'))
-});
-router.get('/account/sign_up', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../../../frontend/pages/account/sign_up/sign_up.html'))
 });
 
 

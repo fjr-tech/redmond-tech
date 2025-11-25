@@ -9,6 +9,7 @@ function login() {
     const errorMsg = document.getElementById('errorMsg');
 
 
+    /*
     const validUsername = "user";
     const validPassword = "1234";
 
@@ -17,4 +18,8 @@ function login() {
     } else {
         errorMsg.textContent = "Invalid username or password!";
     }
+
+    */
+
+    
 }
