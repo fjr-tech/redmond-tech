@@ -9,21 +9,15 @@ function login2() {
     const errorMsg = document.getElementById('errorMsg');
 
 
-    /*
-    const validUsername = "user";
-    const validPassword = "1234";
-
-    if(username === validUsername && password === validPassword) {
-        alert("Login successful!");
-    } else {
-        errorMsg.textContent = "Invalid username or password!";
-    }
-
-    */
 
     
 }
-async function logincheck(username, password){
+
+async function logincheck(){
+    // Get username and password
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    // Semds Login to backend
     const response = await fetch('/api/login', {
         method: 'POST',
         headers: {
@@ -33,6 +27,7 @@ async function logincheck(username, password){
 
         body: JSON.stringify({username: username, password: password})
     });
-
+    //wait for response
     const data = await response.json();
+    console.log(data);
 }
