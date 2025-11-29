@@ -28,6 +28,9 @@ router.get('/dashboard', (req, res) => {
 router.get('/logout', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../../../frontend/pages/account/logout/logout.html'));
 });
+router.get('/file_sharing', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../../../frontend/pages/file_sharing/file_sharing.html'));
+});
 
 
 // DEBUG ROUTE
