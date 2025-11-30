@@ -34,15 +34,12 @@ async function accountCreationCheck(){
         return;
 
     }
-
-    /*
-    // Semds Login to backend
+    // Sends account creation to backend
     const response = await fetch('/api/accounts/new', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-
 
         body: JSON.stringify({username: username, password: password1})
     });
@@ -54,5 +51,5 @@ async function accountCreationCheck(){
     }else{
         displayError(data.message);
     }
-    console.log(data); */
+    console.log(data); 
 }
