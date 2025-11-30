@@ -26,3 +26,5 @@ router.get('/permission3', auth(3), (req, res) => {
 });
 
 module.exports = router;
+
+// test
