@@ -21,8 +21,12 @@
 
             "session_token_len": 32,
             "session_token_duration": 7200000
-
-
         }
+    },
+    
+    "file_sharing": {
+        "global_max_storage": 0,
+        "max_storage_per_user": 0,
+        "max_vdisks_per_user": 0
     }
 }
