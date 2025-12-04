@@ -5,9 +5,9 @@ const fs = require('fs');
 const destination = process.env.STORAGE_LOCATION || null;
 
 if (!destination) {
-    console.error("Please add STORAGE_LOCATION to .env file and restart server");
+    return console.error("Please add STORAGE_LOCATION to .env file and restart server");
 } else if (!fs.existsSync(destination)) {
-    console.error(`Destination folder does not exist: ${destination}`);
+    return console.error(`Destination folder does not exist: ${destination}`);
 }
 
 // Creates a storage engine
@@ -19,11 +19,14 @@ const storage = multer.diskStorage({
 
     filename: (req, file, callback) => {
         // File name must be UNIQUE
-        const fileName = `${Date.now()}-${file.originalname}`;
+        const prefix = Date.now();
+        const fileName = `${prefix}-${file.originalname}`;
         callback(null, fileName);
     }
 });
 
 
+const upload = multer({ storage });
+
 // Exports multer with storage engine object passed as an argument
-module.exports = multer({ storage });
+module.exports = upload;
