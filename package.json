@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node backend/index.js",
     "dev": "nodemon backend/index.js",
-    "dbinit": "node backend/config/init_db.js"
+    "dbinit": "node backend/config/init_db.js",
+    "dbreset": "node backend/config/reset_db.js"
   },
   "author": "fjr-tech",
   "license": "ISC",
