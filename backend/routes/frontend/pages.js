@@ -10,6 +10,9 @@ router.get('/', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../../../frontend/pages/public/home/index.html'));
 });
 
+// Templates
+router.use('/templates', express.static(path.join(__dirname, '../../../frontend/templates')));
+
 // LOG IN
 router.get('/login', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../../../frontend/pages/public/login/login.html'));
