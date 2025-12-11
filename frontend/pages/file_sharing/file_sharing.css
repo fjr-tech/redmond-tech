@@ -1,0 +1,6 @@
+page-card{
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 20px;
+}

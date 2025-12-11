@@ -40,6 +40,7 @@
 
     #title_container {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         flex: 1;
@@ -50,13 +51,26 @@
         font-size: 40px;
 
         cursor: pointer;
+        margin: 0;
+        margin-top: 5px;
     }
 
     #title:hover {
         text-decoration: underline;
     }
 
+    #subtitle {
+        margin: 0;
+
+        font-family: 'Times New Roman', Times, serif;
+        font-style: italic;
+    }
+
     #logo {
+        position: absolute;
+        top: 0;
+        right: 0;
+
         height: 100px;
         width: auto;
         aspect-ratio: 1 / 1;
@@ -104,7 +118,10 @@
 <div class="placeholder"></div>
 <div class="nav_bar">
     <div class="row" id="main">
-        <slot id="title_container"><h1 id="title">Redmond Tech Team</h1></slot>
+        <div id="title_container">
+            <h1 id="title">Redmond Tech Team</h1>
+            <p id="subtitle">-</p>
+        </div>
         <img id="logo" src="/assets/tech_logo_hd.png" alt="">
     </div>
     <nav class="row" id="links">
@@ -121,7 +138,7 @@
         <a class="quick_link" href="">About</a>
         <dropdown-menu desc="Authentication" openFrom="bottom" class="quick_link">
             <dropdown-element link="/login"><p>Login</p></dropdown-element>
-            <dropdown-element link="/"><p>Create Account</p></dropdown-element>
+            <dropdown-element link="/sign_up"><p>Create Account</p></dropdown-element>
         </dropdown-menu>
     </nav>
 </div>

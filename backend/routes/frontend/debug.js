@@ -25,4 +25,10 @@ router.get('/permission3', auth(3), (req, res) => {
     res.sendFile(path.resolve(__dirname, '../../../frontend/pages/debug/permissions/permission3.html'));
 });
 
+router.get('/fs', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../../../frontend/pages/debug/fs/fs.html'));
+});
+
 module.exports = router;
+
+// test

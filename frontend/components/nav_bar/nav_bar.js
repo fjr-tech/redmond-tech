@@ -28,6 +28,11 @@ class NavBar extends HTMLElement {
         // Once this js file loads, the HTML dropdown elements get updated
         await import("/components/dropdown/dropdown.js");
 
+        const subtitle_response = await fetch('/api/app_info');
+        const subtitle_json = await subtitle_response.json();
+        const subtitle = subtitle_json.data;
+        this.shadowRoot.getElementById("subtitle").innerText = `${subtitle.package} - ${subtitle["dev-phase"]} v${subtitle.version}`;
+
         // Click on main bar to return to home
         this.shadowRoot.addEventListener('click', (event) => {
             const target = event.target;

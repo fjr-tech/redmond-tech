@@ -1,8 +1,12 @@
 
 function togglePassword() {
-    const pwd = document.getElementById('password');
-    pwd.type = (pwd.type === 'password') ? 'text' : 'password';
+    const passwords = document.getElementsByClassName('password');
+    for(let i=0 ; i<passwords.length; i++){
+        const pwd = passwords[i];
+        pwd.type = (pwd.type === 'password') ? 'text' : 'password';
+    }
 }
+
 document.addEventListener("keydown",function(event){
     if(event.key==="Enter"){
         logincheck();
@@ -19,19 +23,25 @@ function displayError(message) {
 
 }
 
-async function logincheck(){
+async function accountCreationCheck(){
     // Get username and password
     const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    // Semds Login to backend
-    const response = await fetch('/api/accounts/login', {
+    const password1 = document.getElementById('password1').value;
+    const password2 = document.getElementById('password2').value;
+    // Check if passwords match
+    if(password1 !== password2){
+        displayError("Passwords do not match");
+        return;
+
+    }
+    // Sends account creation to backend
+    const response = await fetch('/api/accounts/new', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
 
-
-        body: JSON.stringify({username: username, password: password})
+        body: JSON.stringify({username: username, password: password1})
     });
     //wait for response
     const data = await response.json();
@@ -41,5 +51,5 @@ async function logincheck(){
     }else{
         displayError(data.message);
     }
-    console.log(data);
+    console.log(data); 
 }
