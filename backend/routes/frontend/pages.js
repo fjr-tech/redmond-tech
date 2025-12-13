@@ -22,6 +22,9 @@ router.get('/login', (req, res) => {
 router.get('/sign_up', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../../../frontend/pages/public/sign_up/sign_up.html'));
 });
+router.get('/info', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../../../frontend/pages/public/info/info.html'));
+});
 
 
 // HOME PAGE
