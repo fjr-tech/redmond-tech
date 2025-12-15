@@ -1,8 +1,12 @@
 
-function togglePassword() {
-    const passwords = document.getElementsByClassName('password');
-    for(let i=0 ; i<passwords.length; i++){
-        const pwd = passwords[i];
+function toggleSensitiveDataDisplay() {
+    const sensitiveData = [
+        ...document.getElementsByClassName('password'), // spread operator expands arrays
+        document.getElementById('accountCreationKey')
+    ];
+    
+    for(let i=0 ; i<sensitiveData.length; i++){
+        const pwd = sensitiveData[i];
         pwd.type = (pwd.type === 'password') ? 'text' : 'password';
     }
 }
@@ -28,6 +32,8 @@ async function accountCreationCheck(){
     const username = document.getElementById('username').value;
     const password1 = document.getElementById('password1').value;
     const password2 = document.getElementById('password2').value;
+    const accountCreationKey = document.getElementById('accountCreationKey').value;
+
     // Check if passwords match
     if(password1 !== password2){
         displayError("Passwords do not match");
@@ -41,7 +47,7 @@ async function accountCreationCheck(){
             'Content-Type': 'application/json'
         },
 
-        body: JSON.stringify({username: username, password: password1})
+        body: JSON.stringify({username: username, password: password1, accountCreationKey: accountCreationKey})
     });
     //wait for response
     const data = await response.json();

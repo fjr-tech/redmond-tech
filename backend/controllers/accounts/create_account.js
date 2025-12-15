@@ -9,9 +9,9 @@ const createAccount = require('../../services/accounts/create_account.js');
 
 module.exports = async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { username, password, accountCreationKey } = req.body;
 
-        await createAccount(username, password);
+        await createAccount(username, password, accountCreationKey);
 
         res.status(201).json({ message: "Account created!" });
 
