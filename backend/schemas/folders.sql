@@ -9,6 +9,6 @@ CREATE TABLE IF NOT EXISTS folders (
     path VARCHAR(500) NOT NULL, -- absolute disk path
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (owner_id) REFERENCES accounts(id) ON DELETE CASCADE,
     FOREIGN KEY (parent_folder_id) REFERENCES folders(folder_id) ON DELETE CASCADE -- when parent folder is deleted, delete child folder
 );

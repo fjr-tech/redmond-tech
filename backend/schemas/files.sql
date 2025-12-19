@@ -11,6 +11,6 @@ CREATE TABLE IF NOT EXISTS files (
     size_bytes BIGINT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (owner_id) REFERENCES accounts(id) ON DELETE CASCADE,
     FOREIGN KEY (folder_id) REFERENCES folders(folder_id) ON DELETE CASCADE -- delete file when folder is deleted
 );
