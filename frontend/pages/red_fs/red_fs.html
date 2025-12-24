@@ -10,10 +10,22 @@
     <script src="/components/nav_bar/nav_bar.js"></script>
 </head>
 <body>
-    <page-nav></page-nav>
+    <page-nav>
+        <dropdown-menu desc="Upload" openFrom="bottom" class="dropdown">
+            <dropdown-element link="" id="upload_file">
+                <p>File</p>
+                <input type="file" id="fileToUpload" name="upload" hidden>
+            </dropdown-element>
+            <dropdown-element link=""><p>Multiple files</p></dropdown-element>
+            <dropdown-element link=""><p>Entire folder</p></dropdown-element>
+        </dropdown-menu>
+        <a class="quick_link" href="" id="new_folder">New Folder</a>
+        <a class="quick_link" href="">TBD</a>
+        <a class="quick_link" href="">TBD</a>
+    </page-nav>
     <main>
 
-        <form id="uploadForm" class="upload" enctype="multipart/form-data">
+        <!-- <form id="uploadForm" class="upload" enctype="multipart/form-data">
             <input type="file" id="fileToUpload" name="upload" hidden>
 
             <button type="button" id="chooseBtn">Choose File</button>
@@ -21,7 +33,9 @@
             <br><br>
 
             <button type="submit" id="uploadBtn">Upload</button>
-        </form> 
+        </form> -->
+
+    <p>Current folder: <span id="rfs_folder"></span></p>
 
     <table id="fileTable">
         <thead>
