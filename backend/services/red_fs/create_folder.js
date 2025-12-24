@@ -9,6 +9,15 @@ module.exports = async (account_id, folder_name, parent_folder_id) => {
 
     const folder_path = path.join(process.env.STORAGE_LOCATION, account_id);
 
-    await RedFSModel.createFolder(parent_folder_id, account_id, folder_name, folder_path)
+    // Get root folder owner -- all subfolders created by any editor is owned by the root owner
+    let folder_owner_id;
+
+    if (parent_folder_id != null) {
+        folder_owner_id = await RedFSModel.getFolderOwnerId(parent_folder_id);
+    } else {
+        folder_owner_id = account_id;
+    }
+
+    await RedFSModel.createFolder(parent_folder_id, folder_owner_id, folder_name, folder_path)
 
 }
