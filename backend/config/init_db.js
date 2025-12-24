@@ -65,7 +65,7 @@ require('dotenv').config();
                 }
             }
 
-            await db.query(`INSERT INTO accounts (username, password, permission_level) VALUES (?, ?, ?)`, [SUPER_USER, SUPER_PASSWORD, 3]);
+            await db.query(`INSERT INTO accounts (username, password, privilege_level) VALUES (?, ?, ?)`, [SUPER_USER, SUPER_PASSWORD, 3]);
         }
 
         // Close connection

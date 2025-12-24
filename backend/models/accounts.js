@@ -3,11 +3,11 @@ const db = require('../config/db.js');
 
 class AccountsModel {
     static async createAccount(username, password, config) {
-        const permission_level = config?.permission_level || 1; // 1 = default user
+        const privilege_level = config?.privilege_level || 1; // 1 = default user
 
-        const sql = `INSERT INTO accounts (username, password, permission_level) VALUES (?, ?, ?)`;
+        const sql = `INSERT INTO accounts (username, password, privilege_level) VALUES (?, ?, ?)`;
 
-        await db.query(sql, [username, password, permission_level]);
+        await db.query(sql, [username, password, privilege_level]);
     }
 
     static async login(username, session_token, created_at, expires_at) {
@@ -40,21 +40,21 @@ class AccountsModel {
         return rows?.[0] || null;
     }
 
-    static async getPermissionLevelByAccountId(account_id) {
-        const sql = `SELECT permission_level FROM accounts WHERE id = ?`;
+    static async getPrivilegeLevelByAccountId(account_id) {
+        const sql = `SELECT privilege_level FROM accounts WHERE id = ?`;
 
         const [rows] = await db.query(sql, [account_id]);
 
         return rows?.[0] || null;
     }
 
-    static async getPermissionLevelBySession(session_token) {
+    static async getPrivilegeLevelBySession(session_token) {
         const session = await this.getSession(session_token);
         if (!session) return;
 
         const account_id = session.account_id;
 
-        return await this.getPermissionLevelByAccountId(account_id);
+        return await this.getPrivilegeLevelByAccountId(account_id);
 
     }
 

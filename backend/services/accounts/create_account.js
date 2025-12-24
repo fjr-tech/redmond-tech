@@ -2,6 +2,7 @@ const AccountsModel = require('../../models/accounts.js');
 const { validateUsername, validatePassword } = require('../../utils/accounts/validate_credential_specs.js');
 const verifyAccountCreationKey = require('../../utils/accounts/verify_account_creation_key.js');
 
+const path = require('path');
 const fs = require('fs');
 
 module.exports = async (username, password, accountCreationKey) => {

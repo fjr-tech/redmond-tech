@@ -6,7 +6,12 @@ CREATE TABLE IF NOT EXISTS folder_permissions (
 
     PRIMARY KEY(folder_id, account_id),
 
-    access ENUM('owner', 'admin', 'rw', 'r') NOT NULL,
+    permission_level TINYINT NOT NULL,
+    -- 0 [this level is not in use]
+    -- 1 read
+    -- 2 read/write
+    -- 3 admin
+    -- 4 owner
 
     FOREIGN KEY (folder_id) REFERENCES folders(folder_id) ON DELETE CASCADE,
     FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
