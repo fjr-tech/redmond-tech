@@ -44,8 +44,10 @@ router.get('/dashboard', (req, res) => {
 router.get('/logout', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../../../frontend/pages/account/logout/logout.html'));
 });
-router.get('/file_sharing', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../../../frontend/pages/file_sharing/file_sharing.html'));
+
+router.get('/rfs', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../../../frontend/pages/red_fs/red_fs.html'));
 });
+router.use('/rfs', express.static(path.join(__dirname, '../../../frontend/pages/red_fs')));
 
 module.exports = router;
