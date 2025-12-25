@@ -6,9 +6,7 @@ module.exports = async (req, res) => {
     try {
         const { folder_name, parent_folder_id = null } = req.body;
         
-        const session_token = req.cookies.session_token;
-
-        await createFolder(session_token, folder_name, parent_folder_id);
+        await createFolder(req.account_id, folder_name, parent_folder_id);
 
         res.status(201).json({ message: "Folder created!" });
     } catch (error) {

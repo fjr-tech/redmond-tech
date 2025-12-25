@@ -3,9 +3,7 @@
 const getRootFolders = require('../../services/red_fs/get_root_folders.js');
 module.exports = async (req, res) => {
     try {
-        const session_token = req.cookies.session_token;
-
-        const resources = await getRootFolders(session_token);
+        const resources = await getRootFolders(req.account_id);
 
         res.status(200).json({
             data: {

@@ -15,6 +15,9 @@ const createFolder = require('../../controllers/red_fs/create_folder.js');
 router.post('/folder', auth(1), createFolder);
 
 // Upload file
+const uploadMiddleware = require('../../middleware/upload.js');
+const uploadMetadataHandler = require('../../controllers/red_fs/upload.js');
+router.post('/upload/:folder_id', auth(1), uploadMiddleware, uploadMetadataHandler);
 
 // Upload multiple files
 

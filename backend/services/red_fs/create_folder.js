@@ -3,12 +3,10 @@ const RedFSModel = require('../../models/red_fs.js');
 const AccountsModel = require('../../models/accounts.js');
 
 // Service to create a folder
-module.exports = async (session_token, folder_name, parent_folder_id) => {
+module.exports = async (account_id, folder_name, parent_folder_id) => {
     
     // ** Add resource name validation later ** (seriously)
     // For now, assume folder name is okay
-
-    const { account_id } = await AccountsModel.getSession(session_token);
 
     const folder_path = path.join(process.env.STORAGE_LOCATION, JSON.stringify(account_id));
 

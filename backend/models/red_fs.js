@@ -98,8 +98,9 @@ class RedFS {
         return rows;
     }
 
-    static async uploadFile(metadata) {
-        console.log(metadata)
+    static async uploadFile(owner_id, folder_id, original_name, stored_name, path, mime_type, size_bytes) {
+        const sql = `INSERT INTO files (owner_id, folder_id, original_name, stored_name, path, mime_type, size_bytes) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+        await db.query(sql, [owner_id, folder_id, original_name, stored_name, path, mime_type, size_bytes]);
     }
 
     static async deleteFile() {

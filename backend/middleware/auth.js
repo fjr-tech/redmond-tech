@@ -13,6 +13,9 @@ module.exports = (required_privilege_level = 1) => {
         if (!await AccountsModel.isValidSessionToken(session_token)) return res.status(401).json({ message: "not authenticated" });
         if (await AccountsModel.getPrivilegeLevelBySession(session_token) < required_privilege_level) return res.status(403).json({ message: "forbidden" });
 
+        const session = await AccountsModel.getSession(session_token);
+        req.account_id = session.account_id;
+
         next();
     }
 }
