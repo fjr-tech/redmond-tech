@@ -12,33 +12,36 @@ async function uploadFile(file) {
     // await loadFiles(); // refresh table after upload
 }
 
-async function loadResourcesInFolder(folder_id = null) {
+async function loadResourcesInFolder(folder_id = '') {
 
     console.log('loading resources...');
 
     // Send request
-    const res = await fetch(`/api/rfs?folder_id=${folder_id}`);
+    const res = await fetch(`/api/rfs/${folder_id}`);
     const res_data = await res.json();
 
-    const folders = res_data.data.root_folders
+    const resources = res_data.data.resources;
 
     const tbody = document.getElementById("fileTableBody");
     tbody.innerHTML = ""; // clear existing rows
 
-    folders.forEach(folder => {
+    resources.forEach(resource => {
         const tr = document.createElement("tr");
 
         tr.innerHTML = `
-            <td>${folder.folder_name}</td>
-            <td>${folder.created_at}</td>
-            <td>${folder.owner_id}</td>
-            <td>${folder.permission_level}</td>
+            <td>${resource.name}</td>
+            <td>${resource.created_at}</td>
+            <td>${resource.owner_id}</td>
+            <td>${resource.permission_level}</td>
             <td></td>
         `;
 
-        tr.addEventListener('click', () => {
-            loadResourcesInFolder(folder.folder_id);
-        });
+        if (resource.type === 'folder') {
+            tr.addEventListener('click', () => {
+                loadResourcesInFolder(resource.id);
+            });
+        }
+        
 
         tbody.appendChild(tr);
     });

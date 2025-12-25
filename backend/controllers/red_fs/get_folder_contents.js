@@ -1,11 +1,12 @@
 // Get root folders accessible by a given account
 
-const getRootFolders = require('../../services/red_fs/get_root_folders.js');
+const getResources = require('../../services/red_fs/get_resources.js');
 module.exports = async (req, res) => {
     try {
-        const session_token = req.cookies.session_token;
+        // which folder to fetch from
+        const folder_id = req.params.folder_id;
 
-        const resources = await getRootFolders(session_token);
+        const resources = await getResources(folder_id);
 
         res.status(200).json({
             data: {

@@ -44,7 +44,7 @@ class RedFS {
 
     static async getAccessibleRootFolders(account_id) {
         const sql = `
-            SELECT f.folder_id, f.folder_name, f.created_at, f.owner_id, fp.permission_level
+            SELECT 'folder' AS type, f.folder_id as id, f.folder_name as name, f.created_at, f.owner_id, fp.permission_level
             FROM folders f
             JOIN folder_permissions fp ON fp.folder_id = f.folder_id
             WHERE fp.account_id = ?
@@ -68,8 +68,34 @@ class RedFS {
     }
 
     // Returns all contents of a folder (will not get contents of sub-folders)
-    getFolder() {
+    static async getFolderContents(folder_id) {
+        const sql = `
+            SELECT
+                'folder' AS type,
+                f.folder_id AS id,
+                f.folder_name AS name,
+                f.created_at AS created_at,
+                NULL AS size_bytes,
+                NULL AS mime_type
+            FROM folders f
+            WHERE f.parent_folder_id = ?
 
+            UNION ALL
+
+            SELECT
+                'file' AS type,
+                fi.file_id AS id,
+                fi.original_name AS name,
+                fi.created_at AS created_at,
+                fi.size_bytes AS size_bytes,
+                fi.mime_type AS mime_type
+            FROM files fi
+            WHERE fi.folder_id = ?
+            ORDER BY created_at ASC
+        `;
+
+        const [rows] = await db.query(sql, [folder_id, folder_id]);
+        return rows;
     }
 
     static async uploadFile(metadata) {

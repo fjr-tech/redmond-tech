@@ -22,6 +22,9 @@ router.post('/folder', auth(1), createFolder);
 
 
 // Get root folders
+const getFolderContent = require('../../controllers/red_fs/get_folder_contents.js');
+router.get('/:folder_id', auth(1), getFolderContent);
+
 const getRootFolders = require('../../controllers/red_fs/get_root_folders.js');
 router.get('/', auth(1), getRootFolders);
 
