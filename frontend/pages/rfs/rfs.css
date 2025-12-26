@@ -48,17 +48,54 @@ th {
 }
 
 
-td .type {
+/* Set row heights */
+thead th {
+    height: 50px;
+}
+tbody td {
+    height: 40px;
+}
+
+
+/* Set column width */
+.col-resource {
+    width: 50%;
+}
+.col-date {
+    width: 20%;
+}
+.col-owner {
+    width: 10%;
+}
+.col-permission {
+    width: 10%;
+}
+.col-size {
+    width: 10%;
+}
+
+/* CSS for resource column */
+td .resource_type {
     margin-right: 8px;
 }
-td .file_name:hover {
+td .resource_name:hover {
     text-decoration: underline;
     cursor: pointer;
 }
 
+
+/* Alternate colours for rows */
 tr:nth-child(even) {
 	background-color: #000000;
 }
 tr:nth-child(odd) {
 	background-color: #272727;
+}
+
+/* Go to parent directory text */
+#goToParentDirectory {
+    cursor: pointer;
+}
+#goToParentDirectory:hover {
+    text-decoration: underline;
 }
