@@ -2,7 +2,7 @@
 let folder_path = [{folder_id: '', folder_name: ''}]; // for root dir
 
 // Load resources
-async function loadResources(folder_path) {
+async function loadResources() {
     console.log('loading resources...');
 
     const folder_path_tail = folder_path[folder_path.length - 1];
@@ -45,7 +45,7 @@ async function loadResources(folder_path) {
 
                 if (event.target.id == resource.id) {
                     folder_path.push({folder_id: resource.id, folder_name: resource.name});
-                    loadResources(folder_path);
+                    loadResources();
                 }
 
             });
@@ -72,7 +72,7 @@ async function loadResources(folder_path) {
             rfs_path_element.addEventListener('click', () => {
                 // Slice the folder_path array to include 0 up to the i-th element (inclusive)
                 folder_path = folder_path.slice(0, i + 1);
-                loadResources(folder_path);
+                loadResources();
             });
 
             elements.push(rfs_path_element);
@@ -154,9 +154,29 @@ function sizeToString(size_bytes, precision = 2) {
 
 
 // load root
-loadResources(folder_path);
+loadResources();
+
+
+
 
 // File upload
+async function uploadFile(file) {
+    const currentFolderId = folder_path[folder_path.length - 1].folder_id;
+    if (currentFolderId === '') return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const res = await fetch(`/api/rfs/upload/${currentFolderId}`, {
+        method: 'POST',
+        body: formData
+    });
+
+    if (!res.ok) console.error('Upload failed');
+
+    loadResources();
+}
+
 const fileInput = document.querySelector('#upload');
 document.getElementById("upload_file").addEventListener('click', () => fileInput.click());
 
@@ -184,5 +204,5 @@ document.querySelector('#goToParentDirectory').addEventListener('click', (event)
         folder_path.pop();
     }
     
-    loadResources(folder_path);
+    loadResources();
 });
