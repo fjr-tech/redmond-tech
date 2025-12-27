@@ -5,10 +5,10 @@ module.exports = async (req, res) => {
     try {
         const { file_id } = req.params;
 
-        const file_path = await download(req.account_id, file_id);
+        const {file_path, file_name} = await download(req.account_id, file_id);
 
         // res.download automatically sends a 200 status code
-        res.download(file_path, err => {
+        res.download(file_path, file_name, err => {
             if (err) {
                 res.status(500).json({ message: 'Download failed' });
             }

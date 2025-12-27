@@ -10,7 +10,10 @@ module.exports = async (account_id, file_id) => {
     }
 
     const file_data = await RedFSModel.getFileData(file_id);
-    const file_path = file_data.path;
+    const return_data = {
+        file_path: file_data.path,
+        file_name: file_data.original_name
+    }
 
-    return file_path;
+    return return_data;
 }
