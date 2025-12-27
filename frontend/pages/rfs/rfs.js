@@ -203,7 +203,7 @@ document.querySelector('#new_folder').addEventListener('click', async (event) =>
         } else {
             return JSON.stringify({
                 folder_name: folder_name,
-                parent_folder_id: currentFolderId
+                parent_folder_id: folder_path[folder_path.length - 1].folder_id
             });
         }
     })();
