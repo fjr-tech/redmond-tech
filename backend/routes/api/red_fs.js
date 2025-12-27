@@ -31,4 +31,8 @@ router.get('/:folder_id', auth(1), getFolderContent);
 const getRootFolders = require('../../controllers/red_fs/get_root_folders.js');
 router.get('/', auth(1), getRootFolders);
 
+// Download
+const download = require('../../controllers/red_fs/download.js');
+router.get('/download/:file_id', auth(1), download);
+
 module.exports = router;

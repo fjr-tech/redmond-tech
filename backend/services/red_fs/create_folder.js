@@ -1,6 +1,5 @@
 const path = require('path');
 const RedFSModel = require('../../models/red_fs.js');
-const AccountsModel = require('../../models/accounts.js');
 
 // Service to create a folder
 module.exports = async (account_id, folder_name, parent_folder_id) => {

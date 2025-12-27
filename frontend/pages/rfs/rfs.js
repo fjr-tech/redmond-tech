@@ -49,6 +49,14 @@ async function loadResources() {
                 }
 
             });
+        } else if (resource.type === 'file') {
+            tr.addEventListener('click', (event) => {
+
+                if (event.target.id == resource.id) {
+                    downloadFile(resource.id);
+                }
+
+            });
         }
     });
 
@@ -157,7 +165,10 @@ function sizeToString(size_bytes, precision = 2) {
 loadResources();
 
 
-
+async function downloadFile(file_id) {
+    // Don't use fetch here when just downloading
+    window.location.href = `/api/rfs/download/${file_id}`;
+}
 
 // File upload
 async function uploadFile(file) {
