@@ -189,8 +189,36 @@ fileInput.addEventListener('change', async () => {
 
 
 // New folder
-document.querySelector('#new_folder').addEventListener('click', (event) => {
-    event.preventDefault();
+document.querySelector('#new_folder').addEventListener('click', async (event) => {
+    event.preventDefault(); // prevent page reload
+
+    const folder_name = prompt('Folder name: ');
+
+    const reqBody = (() => {
+        if (folder_path.length === 1) {
+            return JSON.stringify({
+                folder_name: folder_name,
+                parent_folder_id: null
+            });
+        } else {
+            return JSON.stringify({
+                folder_name: folder_name,
+                parent_folder_id: currentFolderId
+            });
+        }
+    })();
+
+    const res = await fetch(`/api/rfs/folder`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: reqBody
+    });
+
+    if (!res.ok) console.error('Upload failed');
+
+    loadResources();
     
 });
 
