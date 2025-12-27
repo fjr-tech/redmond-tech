@@ -196,6 +196,9 @@ fileInput.addEventListener('change', async () => {
 
     const file = fileInput.files[0];
     uploadFile(file);
+
+    // Clear the input, so the 'change' listener detects a change if the same file is uploaded again
+    fileInput.value = '';
 });
 
 
