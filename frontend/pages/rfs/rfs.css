@@ -92,6 +92,11 @@ tr:nth-child(odd) {
 	background-color: #272727;
 }
 
+/* Selected rows */
+tr.selected * {
+    background-color: #00152e;
+}
+
 /* Go to parent directory text */
 #goToParentDirectory {
     cursor: pointer;

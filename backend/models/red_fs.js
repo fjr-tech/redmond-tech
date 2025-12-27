@@ -98,6 +98,64 @@ class RedFS {
         return rows;
     }
 
+    static async getFilesByFolderIdRecursive(folder_id) {
+        let files = [];
+        const folder_contents = await this.getFolderContents(folder_id);
+
+        for (const resource of folder_contents) {
+            if (resource.type === 'file') {
+                files.push(resource);
+            } else if (resource.type === 'folder') {
+                const subFiles = await this.getFilesByFolderIdRecursive(resource.id);
+                files.push(...subFiles); // use spread operator to flatten
+            }
+        }
+
+        return files;
+    }
+
+    static async getFilePathsByFolderId(folder_id) {
+        const sql = `
+            SELECT
+                f.folder_id AS id,
+                'folder' AS type,
+                NULL AS path,
+                f.created_at AS created_at
+            FROM folders f
+            WHERE f.parent_folder_id = ?
+
+            UNION ALL
+
+            SELECT
+                fi.file_id AS id,
+                'file' AS type,
+                fi.path AS path,
+                fi.created_at AS created_at
+            FROM files fi
+            WHERE fi.folder_id = ?
+            ORDER BY created_at ASC
+        `;
+
+        const [rows] = await db.query(sql, [folder_id, folder_id]);
+        return rows;
+    }
+
+    static async getFilePathsByFolderIdRecursive(folder_id) {
+        let file_paths = [];
+        const folder_contents = await this.getFilePathsByFolderId(folder_id);
+
+        for (const resource of folder_contents) {
+            if (resource.type === 'file') {
+                file_paths.push(resource.path);
+            } else if (resource.type === 'folder') {
+                const subFiles = await this.getFilePathsByFolderIdRecursive(resource.id);
+                file_paths.push(...subFiles); // use spread operator to flatten
+            }
+        }
+
+        return file_paths;
+    }
+
     static async getRootFolderIdByFolderId(folder_id) {
         const sql = `SELECT parent_folder_id, owner_id FROM folders WHERE folder_id = ?`;
         const [rows] = await db.query(sql, [folder_id]);
@@ -164,9 +222,16 @@ class RedFS {
         await db.query(sql, [owner_id, folder_id, original_name, stored_name, path, mime_type, size_bytes]);
     }
 
-    static async deleteFile() {
-        
+    static async deleteFile(file_id) {
+        const sql = `DELETE from files WHERE file_id = ?`;
+        await db.query(sql, [file_id]);
     }
+
+    static async deleteFolder(folder_id) {
+        const sql = `DELETE from folders WHERE folder_id = ?`;
+        await db.query(sql, [folder_id]);
+    }
+
 }
 
 module.exports = RedFS;

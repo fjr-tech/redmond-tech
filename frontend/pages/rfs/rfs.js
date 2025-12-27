@@ -1,10 +1,10 @@
 // Folder path array stores folder hierarchy of the folder the user is in
 let folder_path = [{folder_id: '', folder_name: ''}]; // for root dir
+// let selected_resources = [{type: '', id: ''}];
+let selected_resources = []; // an array in case multi-select is necessary later on
 
 // Load resources
 async function loadResources() {
-    console.log('loading resources...');
-
     const folder_path_tail = folder_path[folder_path.length - 1];
 
     // Send request
@@ -28,13 +28,14 @@ async function loadResources() {
         tr.innerHTML = `
             <td>
                 <span class="resource_type">${resourceIcon}</span>
-                <span class="resource_name" id='${resource.id}'>${resource.name}</span>
+                <span class="resource_name" id='link-${resource.id}'>${resource.name}</span>
             </td>
             <td>${resource.created_at}</td>
             <td>${ownerId}</td>
             <td>${permissionLevel}</td>
             <td>${resourceSize}</td>
         `;
+        tr.id = `${resource.type}-${resource.id}`;
 
         
         table_body.appendChild(tr);
@@ -43,7 +44,7 @@ async function loadResources() {
         if (resource.type === 'folder') {
             tr.addEventListener('click', (event) => {
 
-                if (event.target.id == resource.id) {
+                if (event.target.id === `link-${resource.id}`) {
                     folder_path.push({folder_id: resource.id, folder_name: resource.name});
                     loadResources();
                 }
@@ -52,7 +53,7 @@ async function loadResources() {
         } else if (resource.type === 'file') {
             tr.addEventListener('click', (event) => {
 
-                if (event.target.id == resource.id) {
+                if (event.target.id === `link-${resource.id}`) {
                     downloadFile(resource.id);
                 }
 
@@ -201,6 +202,41 @@ fileInput.addEventListener('change', async () => {
     fileInput.value = '';
 });
 
+// Delete
+async function deleteFile(file_id) {
+    const res = await fetch(`/api/rfs/delete`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            type: 'file',
+            resource_id: file_id
+        })
+    });
+
+    if (!res.ok) console.error('Deletion failed');
+
+    loadResources();
+}
+
+async function deleteFolder(folder_id) {
+    const res = await fetch(`/api/rfs/delete`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            type: 'folder',
+            resource_id: folder_id
+        })
+    });
+
+    if (!res.ok) console.error('Deletion failed');
+
+    loadResources();
+}
+
 
 // New folder
 document.querySelector('#new_folder').addEventListener('click', async (event) => {
@@ -248,4 +284,74 @@ document.querySelector('#goToParentDirectory').addEventListener('click', (event)
     }
     
     loadResources();
+});
+
+// Resource selection
+function selectResource(rowElement) {
+    rowElement.classList.add('selected');
+    selected_resources = [getResourceData(rowElement)];
+}
+
+function deselectResource(rowElement) {
+    if (rowElement.classList.contains('selected')) {
+        rowElement.classList.remove('selected');
+        
+        selected_resources = [];
+    }
+}
+
+function getResourceData(rowElement) {
+    const elementId = rowElement.id;
+    const [type, resource_id] = elementId.split('-');
+
+    return {
+        type: type,
+        id: resource_id
+    };
+}
+
+// Resource selection event listener
+document.addEventListener('click', (event) => {
+    const rows = document.querySelectorAll('tbody tr');
+    for (const row of rows) {
+        // If row is clicked on
+        if (row.contains(event.target)) {
+            // Flip selection state
+            if (row.classList.contains('selected')) {
+                deselectResource(row);
+            } else {
+                selectResource(row);
+            }
+        } else {
+            // Make sure rows that were not clicked on are deselected
+            deselectResource(row);
+        }
+    }
+});
+
+// Rename
+document.querySelector('#rename').addEventListener('click', async (event) => {
+    event.preventDefault(); // prevent page reload
+
+});
+
+// Move
+document.querySelector('#move').addEventListener('click', async (event) => {
+    event.preventDefault(); // prevent page reload
+
+});
+
+// Delete
+document.querySelector('#delete').addEventListener('click', async (event) => {
+    event.preventDefault(); // prevent page reload
+
+    if (selected_resources.length === 0) return;
+
+    const type = selected_resources[0].type;
+    if (type === 'folder') {
+        deleteFolder(selected_resources[0].id);
+    } if (type === 'file') {
+        deleteFile(selected_resources[0].id);
+    }
+
 });

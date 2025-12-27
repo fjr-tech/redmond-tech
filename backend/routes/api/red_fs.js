@@ -35,4 +35,9 @@ router.get('/', auth(1), getRootFolders);
 const download = require('../../controllers/red_fs/download.js');
 router.get('/download/:file_id', auth(1), download);
 
+
+// Delete
+const delete_resource = require('../../controllers/red_fs/delete.js');
+router.delete('/delete', auth(1), delete_resource);
+
 module.exports = router;
