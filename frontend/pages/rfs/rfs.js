@@ -223,7 +223,9 @@ fileInput.addEventListener('change', async () => {
 });
 
 // Delete
+
 async function deleteFile(file_id) {
+    if(confirm("Are you sure you want to delete this file?")) {
     const res = await fetch(`/api/rfs/delete`, {
         method: 'DELETE',
         headers: {
@@ -238,9 +240,10 @@ async function deleteFile(file_id) {
     if (!res.ok) console.error('Deletion failed');
 
     loadResources();
-}
+}}
 
 async function deleteFolder(folder_id) {
+    if(confirm("Are you sure you want to delete this folder and all its contents?")) {
     const res = await fetch(`/api/rfs/delete`, {
         method: 'DELETE',
         headers: {
@@ -255,7 +258,7 @@ async function deleteFolder(folder_id) {
     if (!res.ok) console.error('Deletion failed');
 
     loadResources();
-}
+}}
 
 
 // New folder
