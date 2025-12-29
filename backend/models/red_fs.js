@@ -67,6 +67,26 @@ class RedFS {
         return rows;
     }
 
+    static async getRootFolders(account_id) {
+        const sql = `
+            SELECT 'folder' AS type, f.folder_id as id, f.folder_name as name, f.created_at, f.owner_id, fp.permission_level
+            FROM folders f
+            WHERE f.owner_id = ?
+            AND f.parent_folder_id IS NULL
+        `;
+
+        const [rows] = await db.query(sql, [account_id]);
+        return rows;
+    }
+
+    static async getFolderData(folder_id) {
+        const sql = `SELECT * FROM folders WHERE folder_id = ?`;
+
+        const [rows] = await db.query(sql, [folder_id]);
+
+        return rows[0];
+    }
+
     // Returns all contents of a folder (will not get contents of sub-folders)
     static async getFolderContents(folder_id) {
         const sql = `
@@ -156,12 +176,42 @@ class RedFS {
         return file_paths;
     }
 
+    // Returns all files owned by an account
+    static async getAllFilesByAccountId(account_id) {
+        const root_folders = await this.getRootFolders(account_id);
+
+        let all_files = [];
+
+        for (const root_folder of root_folders) {
+            // All files in that root folder found recursively
+            const files = await this.getFilesByFolderIdRecursive(root_folder.folder_id);
+            all_files.push(...files);
+        }
+
+        return all_files;
+    }
+
+    // Returns all file paths of files owned by an account
+    static async getAllFilePathsByAccountId(account_id) {
+        const root_folders = await this.getRootFolders(account_id);
+
+        let all_paths = [];
+
+        for (const root_folder of root_folders) {
+            // All files in that root folder found recursively
+            const paths = await this.getFilePathsByFolderIdRecursive(root_folder.folder_id);
+            all_paths.push(...paths);
+        }
+
+        return all_paths;
+    }
+
     static async getRootFolderIdByFolderId(folder_id) {
         const sql = `SELECT parent_folder_id, owner_id FROM folders WHERE folder_id = ?`;
         const [rows] = await db.query(sql, [folder_id]);
         const parent_folder_id = rows[0]?.parent_folder_id;
 
-        if (parent_folder_id === null) return rows[0]?.owner_id;
+        if (parent_folder_id === null) return folder_id;
 
         // if not root folder, call method again
         return await this.getRootFolderIdByFolderId(parent_folder_id);
@@ -176,6 +226,15 @@ class RedFS {
         const root_folder_owner = await this.getRootFolderIdByFolderId(folder_id);
 
         return root_folder_owner;
+    }
+
+    static async getFolderIdByFileId(file_id) {
+        const sql = `SELECT folder_id FROM files WHERE file_id = ?`;
+
+        const [rows] = await db.query(sql, [file_id]);
+        const folder_id = rows[0]?.folder_id;
+
+        return folder_id;
     }
 
     static async getRootFolderOwnerIdByFolderId(folder_id) {
@@ -217,19 +276,66 @@ class RedFS {
         return file_data;
     }
 
+    static async isDescendant(candidate_folder_id, ancestor_folder_id) {
+        const candidate = await this.getFolderData(candidate_folder_id);
+        const candidate_parent_id = candidate.parent_folder_id;
+
+        // If the ancestors have been traversed to the root and the target ancestor has not been found, the candidate is not a descendant of the target ancestor
+        if (candidate_parent_id === null) return false;
+        if (candidate_parent_id === ancestor_folder_id) return true;
+
+        return await this.isDescendant(candidate_parent_id, ancestor_folder_id);
+    }
+
     static async uploadFile(owner_id, folder_id, original_name, stored_name, path, mime_type, size_bytes) {
         const sql = `INSERT INTO files (owner_id, folder_id, original_name, stored_name, path, mime_type, size_bytes) VALUES (?, ?, ?, ?, ?, ?, ?)`;
         await db.query(sql, [owner_id, folder_id, original_name, stored_name, path, mime_type, size_bytes]);
     }
 
     static async deleteFile(file_id) {
-        const sql = `DELETE from files WHERE file_id = ?`;
+        const sql = `DELETE FROM files WHERE file_id = ?`;
         await db.query(sql, [file_id]);
     }
 
     static async deleteFolder(folder_id) {
-        const sql = `DELETE from folders WHERE folder_id = ?`;
+        const sql = `DELETE FROM folders WHERE folder_id = ?`;
         await db.query(sql, [folder_id]);
+    }
+
+    static async isRootFolder(folder_id) {
+        const folder_data = await this.getFolderData(folder_id);
+        const isRoot = folder_data.parent_folder_id === null;
+
+        return isRoot;
+    }
+
+    static async moveFile(file_id, destination_folder) {
+        const sql = `UPDATE files SET folder_id = ? WHERE file_id = ?`;
+        await db.query(sql, [destination_folder, file_id]);
+    }
+
+    static async moveFolder(folder_id, destination_folder) {
+        if (folder_id === destination_folder) throw Error('Target and destination cannot be the same.');
+        if (await this.isDescendant(destination_folder, folder_id)) throw Error('Destination cannot be a descendant of the target.');
+
+        // This code has been commented out because it has been decided to disallow cross-root-folder movement
+        /*
+        // If moving to root
+        if (destination_folder === null) {
+            const folder_owner = await this.getOwnerIdByFolderId(folder_id); // owner of the new root folder will be the same owner as the current folder
+            const sql = `INSERT INTO folder_permissions (folder_id, account_id, permission_level) VALUES (?, ?, ?)`;
+            await db.query(sql, [folder_id, folder_owner, 4]);
+        }
+
+        // If moving from root
+        if (await this.isRootFolder(folder_id)) {
+            const sql = `DELETE FROM folder_permissions WHERE folder_id = ?`;
+            await db.query(sql, [folder_id]);
+        }
+        */
+
+        const sql = `UPDATE folders SET parent_folder_id = ? WHERE folder_id = ?`;
+        await db.query(sql, [destination_folder, folder_id]);
     }
 
 }
