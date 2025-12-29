@@ -35,6 +35,10 @@ router.get('/', auth(1), getRootFolders);
 const download = require('../../controllers/red_fs/download.js');
 router.get('/download/:file_id', auth(1), download);
 
+// View (for images, PDFs, etc.)
+const view = require('../../controllers/red_fs/view.js');
+router.get('/view/:file_id', auth(1), view);
+
 // Move resource
 const move = require('../../controllers/red_fs/move.js');
 router.put('/move', auth(1), move);

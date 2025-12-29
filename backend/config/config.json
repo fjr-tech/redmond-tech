@@ -29,9 +29,9 @@
             "max_storage_bytes": 1073741824
         },
         "per_account": {
-            "max_storage_bytes": 131072,
-            "max_upload_bytes": 32768,
-            "max_resources": 256,
+            "max_storage_bytes": 104857600 ,
+            "max_upload_bytes": 10485760 ,
+            "max_resources": 10485760 ,
             "max_uploads_per_request": 4
         }
     }

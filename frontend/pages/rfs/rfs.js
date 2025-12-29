@@ -36,6 +36,7 @@ async function loadResources() {
             <td>${resourceSize}</td>
         `;
         tr.id = `${resource.type}-${resource.id}`;
+        tr.setAttribute('data-mime-type', resource.mime_type || 'application/octet-stream');
 
         
         table_body.appendChild(tr);
@@ -60,7 +61,12 @@ async function loadResources() {
             tr.addEventListener('click', (event) => {
 
                 if (event.target.id === `link-${resource.id}`) {
-                    downloadFile(resource.id);
+                    // Check if file is viewable (image or PDF)
+                    if (resource.mime_type && (resource.mime_type.startsWith('image/') || resource.mime_type === 'application/pdf')) {
+                        imageViewer.open(resource.id, resource.name, resource.mime_type);
+                    } else {
+                        downloadFile(resource.id);
+                    }
                 }
 
                 if (tr.classList.contains('selected')) {
