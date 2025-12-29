@@ -1,6 +1,4 @@
 #error_image {
-    height: 75vh;
+    height: 65vh;
     width: auto;
-    justify-content: center;
-    align-items: center;
 }
