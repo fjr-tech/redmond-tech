@@ -50,4 +50,10 @@ router.get('/rfs', (req, res) => {
 });
 router.use('/rfs', express.static(path.join(__dirname, '../../../frontend/pages/rfs')));
 
+
+// Not found fallback
+router.use((req, res) => {
+    res.status(404).sendFile(path.resolve(__dirname, '../../../frontend/pages/public/errors/404.html'));
+});
+
 module.exports = router;
