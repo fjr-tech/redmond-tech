@@ -47,6 +47,12 @@ async function loadResources() {
                 if (event.target.id === `link-${resource.id}`) {
                     folder_path.push({folder_id: resource.id, folder_name: resource.name});
                     loadResources();
+                } else {
+                    if (tr.classList.contains('selected')) {
+                        deselectResource(tr);
+                    } else {
+                        selectResource(tr);
+                    }
                 }
 
             });
@@ -55,6 +61,12 @@ async function loadResources() {
 
                 if (event.target.id === `link-${resource.id}`) {
                     downloadFile(resource.id);
+                }
+
+                if (tr.classList.contains('selected')) {
+                    deselectResource(tr);
+                } else {
+                    selectResource(tr);
                 }
 
             });
@@ -300,6 +312,15 @@ function deselectResource(rowElement) {
     }
 }
 
+function deselectAllResources() {
+    const selected = document.querySelectorAll('.selected');
+    for (const ele of selected) {
+        ele.classList.remove('selected');
+    }
+
+    selected_resources = [];
+}
+
 function getResourceData(rowElement) {
     const elementId = rowElement.id;
     const [type, resource_id] = elementId.split('-');
@@ -314,15 +335,7 @@ function getResourceData(rowElement) {
 document.addEventListener('click', (event) => {
     const rows = document.querySelectorAll('tbody tr');
     for (const row of rows) {
-        // If row is clicked on
-        if (row.contains(event.target)) {
-            // Flip selection state
-            if (row.classList.contains('selected')) {
-                deselectResource(row);
-            } else {
-                selectResource(row);
-            }
-        } else {
+        if (!row.contains(event.target)) {
             // Make sure rows that were not clicked on are deselected
             deselectResource(row);
         }
