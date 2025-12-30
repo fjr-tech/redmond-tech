@@ -362,6 +362,19 @@ class RedFS {
         await db.query(sql, [destination_folder, folder_id]);
     }
 
+    static async addPermission(folder_id, account_id, permission_level) {
+        const sql = `INSERT INTO folder_permissions (folder_id, account_id, permission_level) VALUES (?, ?, ?)`;
+        await db.query(sql, [destination_folder, file_id]);
+    }
+
+    static async removePermission() {
+
+    }
+
+    static async editPermission() {
+
+    }
+
 }
 
 module.exports = RedFS;

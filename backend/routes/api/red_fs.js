@@ -47,4 +47,16 @@ router.put('/move', auth(1), move);
 const delete_resource = require('../../controllers/red_fs/delete.js');
 router.delete('/delete', auth(1), delete_resource);
 
+// Add account permissions
+const add_permission = require('../../controllers/red_fs/add_permission.js');
+router.post('/add_permission', auth(1), add_permission);
+
+// Remove account permissions
+const remove_permission = require('../../controllers/red_fs/remove_permission.js');
+router.post('/remove_permission', auth(1), remove_permission);
+
+// Edit account permissions
+const edit_permission = require('../../controllers/red_fs/edit_permission.js');
+router.post('/edit_permission', auth(1), edit_permission);
+
 module.exports = router;
