@@ -63,7 +63,7 @@ async function loadResources() {
             tr.addEventListener('click', (event) => {
 
                 if (event.target.id === `link-${resource.id}`) {
-                    // Check if file is viewable (image or PDF)
+                    // Check if file is viewable (image, video, audio, or PDF)
                     if (resource.mime_type && (resource.mime_type.startsWith('image/') || resource.mime_type === 'application/pdf'||resource.mime_type.startsWith('video/')||resource.mime_type.startsWith('audio/'))) {
                         imageViewer.open(resource.id, resource.name, resource.mime_type);
                     } else {
