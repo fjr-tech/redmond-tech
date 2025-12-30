@@ -5,6 +5,7 @@ class ImageViewer {
         this.currentFileName = null;
         this.currentMimeType = null;
         this.isVisible = false;
+        this.currentFileIndex = -1;
         this.initModal();
     }
 
@@ -19,6 +20,7 @@ class ImageViewer {
                     </div>
                     <div class="image-viewer-content">
                         <div class="image-viewer-display">
+                            <div id="image-viewer-loading" style="display: none; text-align: center; padding: 40px; font-size: 18px; color: #707070ff;">Loading...</div>
                             <img id="image-viewer-img" src="" alt="Viewer">
                             <embed id="image-viewer-pdf" type="application/pdf" style="display: none;" width="100%" height="100%">
                         </div>
@@ -30,6 +32,7 @@ class ImageViewer {
                     </div>
                 </div>
             </div>
+            
         `;
 
         document.body.insertAdjacentHTML('beforeend', modalHTML);
@@ -45,6 +48,9 @@ class ImageViewer {
         document.getElementById('image-viewer-download').addEventListener('click', () => this.download());
         document.getElementById('image-viewer-prev').addEventListener('click', () => this.previousFile());
         document.getElementById('image-viewer-next').addEventListener('click', () => this.nextFile());
+
+        // Get loading element
+        this.loadingElement = document.getElementById('image-viewer-loading');
 
         // Close on background click
         this.modal.addEventListener('click', (e) => {
@@ -68,14 +74,29 @@ class ImageViewer {
 
         this.titleElement.textContent = fileName;
 
+        // Show loading text
+        this.loadingElement.style.display = 'block';
+        this.imgElement.style.display = 'none';
+        this.pdfElement.style.display = 'none';
+
         // Determine if it's an image or PDF
         if (mimeType.startsWith('image/')) {
-            this.imgElement.style.display = 'block';
-            this.pdfElement.style.display = 'none';
+            this.imgElement.onload = () => {
+                this.loadingElement.style.display = 'none';
+                this.imgElement.style.display = 'block';
+            };
+            this.imgElement.onerror = () => {
+                this.loadingElement.textContent = 'Failed to load image';
+            };
             this.imgElement.src = `/api/rfs/view/${fileId}`;
         } else if (mimeType === 'application/pdf') {
-            this.imgElement.style.display = 'none';
-            this.pdfElement.style.display = 'block';
+            this.pdfElement.onload = () => {
+                this.loadingElement.style.display = 'none';
+                this.pdfElement.style.display = 'block';
+            };
+            this.pdfElement.onerror = () => {
+                this.loadingElement.textContent = 'Failed to load PDF';
+            };
             this.pdfElement.src = `/api/rfs/view/${fileId}`;
         }
 
@@ -87,6 +108,12 @@ class ImageViewer {
         this.modal.style.display = 'none';
         this.imgElement.src = '';
         this.pdfElement.src = '';
+        this.loadingElement.style.display = 'none';
+        this.loadingElement.textContent = 'Loading...';
+        this.imgElement.onload = null;
+        this.imgElement.onerror = null;
+        this.pdfElement.onload = null;
+        this.pdfElement.onerror = null;
     }
 
     download() {
@@ -131,6 +158,8 @@ class ImageViewer {
                 break;
             }
         }
+
+console.log(currentIndex);
 
         let nextIndex = currentIndex + 1;
         while (nextIndex < rows.length) {
