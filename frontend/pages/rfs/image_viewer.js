@@ -22,7 +22,7 @@ class ImageViewer {
                         <div class="image-viewer-display">
                             <div id="image-viewer-loading" style="display: none; text-align: center; padding: 40px; font-size: 18px; color: #707070ff;">Loading...</div>
                             <img id="image-viewer-img" src="" alt="Viewer">
-                            <embed id="image-viewer-pdf" type="application/pdf" style="display: none;" width="100%" height="100%">
+                                <iframe id="image-viewer-pdf" style="display: none; border: none;" width="100%" height="100%"></iframe>
                         </div>
                     </div>
                     <div class="image-viewer-footer">
@@ -89,7 +89,7 @@ class ImageViewer {
                 this.loadingElement.textContent = 'Failed to load image';
             };
             this.imgElement.src = `/api/rfs/view/${fileId}`;
-        } else if (mimeType === 'application/pdf') {
+            } else if (mimeType === 'application/pdf') {
             this.pdfElement.onload = () => {
                 this.loadingElement.style.display = 'none';
                 this.pdfElement.style.display = 'block';
@@ -102,6 +102,10 @@ class ImageViewer {
 
         this.modal.style.display = 'flex';
     }
+
+        
+      
+    
 
     close() {
         this.isVisible = false;
