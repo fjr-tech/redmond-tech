@@ -21,8 +21,10 @@ class ImageViewer {
                     <div class="image-viewer-content">
                         <div class="image-viewer-display">
                             <div id="image-viewer-loading" style="display: none; text-align: center; padding: 40px; font-size: 18px; color: #707070ff;">Loading...</div>
-                            <img id="image-viewer-img" src="" alt="Viewer">
-                                <iframe id="image-viewer-pdf" style="display: none; border: none;" width="100%" height="100%"></iframe>
+                            <img id="image-viewer-img" src="" alt="Viewer" style="display: none; max-width: 100%; max-height: 100%; object-fit: contain;">
+                            <video id="image-viewer-video" style="display: none; width: 100%; height: 100%; background: #000;" controls></video>
+                            <audio id="image-viewer-audio" style="display: none; width: 100%;" controls></audio>
+                            <iframe id="image-viewer-pdf" style="display: none; border: none;" width="100%" height="100%"></iframe>
                         </div>
                     </div>
                     <div class="image-viewer-footer">
@@ -40,6 +42,8 @@ class ImageViewer {
         // Get modal element
         this.modal = document.getElementById('image-viewer-modal');
         this.imgElement = document.getElementById('image-viewer-img');
+        this.videoElement = document.getElementById('image-viewer-video');
+        this.audioElement = document.getElementById('image-viewer-audio');
         this.pdfElement = document.getElementById('image-viewer-pdf');
         this.titleElement = document.getElementById('image-viewer-title');
 
@@ -79,7 +83,12 @@ class ImageViewer {
         this.imgElement.style.display = 'none';
         this.pdfElement.style.display = 'none';
 
-        // Determine if it's an image or PDF
+        // hide all viewers
+        this.imgElement.style.display = 'none';
+        this.videoElement.style.display = 'none';
+        this.audioElement.style.display = 'none';
+        this.pdfElement.style.display = 'none';
+
         if (mimeType.startsWith('image/')) {
             this.imgElement.onload = () => {
                 this.loadingElement.style.display = 'none';
@@ -89,7 +98,7 @@ class ImageViewer {
                 this.loadingElement.textContent = 'Failed to load image';
             };
             this.imgElement.src = `/api/rfs/view/${fileId}`;
-            } else if (mimeType === 'application/pdf') {
+        } else if (mimeType === 'application/pdf') {
             this.pdfElement.onload = () => {
                 this.loadingElement.style.display = 'none';
                 this.pdfElement.style.display = 'block';
@@ -98,6 +107,29 @@ class ImageViewer {
                 this.loadingElement.textContent = 'Failed to load PDF';
             };
             this.pdfElement.src = `/api/rfs/view/${fileId}`;
+        } else if (mimeType.startsWith('video/')) {
+            // video
+            this.videoElement.onloadeddata = () => {
+                this.loadingElement.style.display = 'none';
+                this.videoElement.style.display = 'block';
+            };
+            this.videoElement.onerror = () => {
+                this.loadingElement.textContent = 'Failed to load video';
+            };
+            // set source and load
+            this.videoElement.src = `/api/rfs/view/${fileId}`;
+            this.videoElement.load();
+        } else if (mimeType.startsWith('audio/')) {
+            // audio
+            this.audioElement.onloadeddata = () => {
+                this.loadingElement.style.display = 'none';
+                this.audioElement.style.display = 'block';
+            };
+            this.audioElement.onerror = () => {
+                this.loadingElement.textContent = 'Failed to load audio';
+            };
+            this.audioElement.src = `/api/rfs/view/${fileId}`;
+            this.audioElement.load();
         }
 
         this.modal.style.display = 'flex';
@@ -111,6 +143,11 @@ class ImageViewer {
         this.isVisible = false;
         this.modal.style.display = 'none';
         this.imgElement.src = '';
+        // pause and clear media sources
+        try { this.videoElement.pause(); } catch (e) {}
+        try { this.audioElement.pause(); } catch (e) {}
+        this.videoElement.src = '';
+        this.audioElement.src = '';
         this.pdfElement.src = '';
         this.loadingElement.style.display = 'none';
         this.loadingElement.textContent = 'Loading...';
@@ -118,6 +155,10 @@ class ImageViewer {
         this.imgElement.onerror = null;
         this.pdfElement.onload = null;
         this.pdfElement.onerror = null;
+        this.videoElement.onloadeddata = null;
+        this.videoElement.onerror = null;
+        this.audioElement.onloadeddata = null;
+        this.audioElement.onerror = null;
     }
 
     download() {
