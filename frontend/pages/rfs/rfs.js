@@ -4,6 +4,7 @@ let folder_path = [{folder_id: '', folder_name: ''}]; // for root dir
 let selected_resources = []; // an array in case multi-select is necessary later on
 
 let moving = false;
+let resources_to_move = [];
 
 // Load resources
 async function loadResources() {
@@ -225,41 +226,78 @@ fileInput.addEventListener('change', async () => {
 // Delete
 
 async function deleteFile(file_id) {
-    if(confirm("Are you sure you want to delete this file?")) {
-    const res = await fetch(`/api/rfs/delete`, {
-        method: 'DELETE',
+    if (confirm("Are you sure you want to delete this file?")) {
+        const res = await fetch(`/api/rfs/delete`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                type: 'file',
+                resource_id: file_id
+            })
+        });
+
+        if (!res.ok) console.error('Deletion failed');
+
+        loadResources();
+    }
+}
+
+async function deleteFolder(folder_id) {
+    if (confirm("Are you sure you want to delete this folder and all its contents?")) {
+        const res = await fetch(`/api/rfs/delete`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                type: 'folder',
+                resource_id: folder_id
+            })
+        });
+
+        if (!res.ok) console.error('Deletion failed');
+
+        loadResources();
+    }
+}
+
+async function moveFile(file_id, new_parent_folder) {
+    const res = await fetch(`/api/rfs/move`, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             type: 'file',
-            resource_id: file_id
+            resource_id: file_id,
+            new_parent_folder: new_parent_folder
         })
     });
 
-    if (!res.ok) console.error('Deletion failed');
+    if (!res.ok) console.error('Operation failed');
 
     loadResources();
-}}
+}
 
-async function deleteFolder(folder_id) {
-    if(confirm("Are you sure you want to delete this folder and all its contents?")) {
-    const res = await fetch(`/api/rfs/delete`, {
-        method: 'DELETE',
+async function moveFolder(folder_id, new_parent_folder) {
+    const res = await fetch(`/api/rfs/move`, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             type: 'folder',
-            resource_id: folder_id
+            resource_id: folder_id,
+            new_parent_folder: new_parent_folder
         })
     });
 
-    if (!res.ok) console.error('Deletion failed');
+    if (!res.ok) console.error('Operation failed');
 
     loadResources();
-}}
-
+}
 
 // New folder
 document.querySelector('#new_folder').addEventListener('click', async (event) => {
@@ -361,8 +399,13 @@ document.querySelector('#rename').addEventListener('click', async (event) => {
 
 // Move
 const move = document.querySelector('#move');
-move.addEventListener('click', async (event) => {
+move.addEventListener('click', (event) => {
     event.preventDefault(); // prevent page reload
+
+    if (selected_resources.length === 0) return alert("Please select a resource to move.");
+
+    resources_to_move = [selected_resources[0]];
+
     moving = true;
     move.innerText = 'Move here';
 
@@ -374,8 +417,10 @@ move.addEventListener('click', async (event) => {
 });
 
 const cancel_move = document.querySelector('#cancel_move');
-cancel_move.addEventListener('click', async (event) => {
+cancel_move.addEventListener('click', (event) => {
     event.preventDefault(); // prevent page reload
+
+    resources_to_move = [];
 
     moving = false;
     move.innerText = 'Move';
@@ -389,6 +434,13 @@ cancel_move.addEventListener('click', async (event) => {
 const move_here = document.querySelector('#move_here');
 move_here.addEventListener('click', async (event) => {
     event.preventDefault(); // prevent page reload
+
+    const currentFolder = folder_path[folder_path.length - 1];
+    if (resources_to_move[0].type === 'folder') {
+        await moveFolder(resources_to_move[0].id, currentFolder.folder_id);
+    } else if (resources_to_move[0].type === 'file') {
+        await moveFile(resources_to_move[0].id, currentFolder.folder_id);
+    }
 
     moving = false;
     move.innerText = 'Move';
