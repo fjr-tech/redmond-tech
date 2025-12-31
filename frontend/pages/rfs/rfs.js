@@ -1,3 +1,6 @@
+import PermissionMenu from '/rfs/permission_menu.js';
+const permission_menu = new PermissionMenu();
+
 // Folder path array stores folder hierarchy of the folder the user is in
 let folder_path = [{folder_id: '', folder_name: ''}]; // for root dir
 // let selected_resources = [{type: '', id: ''}];
@@ -463,6 +466,95 @@ document.querySelector('#delete').addEventListener('click', async (event) => {
         deleteFolder(selected_resources[0].id);
     } if (type === 'file') {
         deleteFile(selected_resources[0].id);
+    }
+});
+
+
+// Custom context menu
+function openContextMenu(menuOptions, left = 0, top = 0) {
+    // menuOptions is an array of objects
+    // Each element of the array is an option
+    // Each object: {option_type: 'label/button' text: "string", id: "html_element_id", callback: onclick_callback_function}
+    
+    const menuEle = document.createElement('div');
+    menuEle.classList.add('ctx_menu');
+
+    menuEle.style.top = `${top}px`;
+    menuEle.style.left = `${left}px`;
+
+    for (const option of menuOptions) {
+        const {option_type, text, id, callback = null} = option;
+
+        const optionEle = document.createElement('div');
+        optionEle.classList.add('ctx_menu_option');
+
+        optionEle.innerText = text;
+        optionEle.id = id;
+
+        switch (option_type) {
+            case 'label':
+                optionEle.classList.add('label');
+                break;
+            case 'button':
+                optionEle.classList.add('button');
+                break;
+        }
+
+        if (callback) optionEle.addEventListener('click', callback);
+
+        menuEle.append(optionEle);
+    }
+
+    document.body.append(menuEle);
+
+}
+
+function closeContextMenu() {
+    const menuEle = document.querySelector('.ctx_menu');
+    menuEle?.remove();
+}
+
+// Close context menu if click is detected outside of menu
+document.addEventListener('click', (event) => {
+    if (!event.target.closest('.ctx_menu')) {
+        closeContextMenu();
+    }
+});
+
+document.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
+
+    deselectAllResources();
+
+    // Close context menu if click was not on context menu
+    if (!event.target.closest('.ctx_menu')) {
+        closeContextMenu();
+    }
+
+    const rowElement = event.target.closest('tr');
+    if (!rowElement) return;
+
+    selectResource(rowElement); // gets closest tr in dom tree
+
+    const resource_name = rowElement.querySelector('.resource_name').innerText;
+    
+    if (selected_resources[0].type === 'folder') {
+
+        const options = [
+            {option_type: 'label', text: resource_name, id: ''},
+        ];
+
+        // If clicked on a root folder
+        if (folder_path.length === 1) {
+            options.push({option_type: 'button', text: "Edit Permissions", id: 'open_permission_controller', callback: () => {
+                closeContextMenu();
+                permission_menu.open();
+            }});
+        }
+
+        openContextMenu(options, event.pageX, event.clientY);
+    } else if (selected_resources[0].type === 'file') {
+        
     }
 
 });

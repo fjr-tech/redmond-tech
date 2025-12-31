@@ -326,6 +326,13 @@ class RedFS {
         await db.query(sql, [folder_id]);
     }
 
+    static async isValidFolderId(folder_id) {
+        const folder_data = await this.getFolderData(folder_id);
+        if (folder_data === undefined) return false;
+
+        return true;
+    }
+
     static async isRootFolder(folder_id) {
         const folder_data = await this.getFolderData(folder_id);
         const isRoot = folder_data.parent_folder_id === null;
@@ -364,7 +371,7 @@ class RedFS {
 
     static async addPermission(folder_id, account_id, permission_level) {
         const sql = `INSERT INTO folder_permissions (folder_id, account_id, permission_level) VALUES (?, ?, ?)`;
-        await db.query(sql, [destination_folder, file_id]);
+        await db.query(sql, [folder_id, account_id, permission_level]);
     }
 
     static async removePermission() {
@@ -373,6 +380,22 @@ class RedFS {
 
     static async editPermission() {
 
+    }
+
+    static async getAllAccountsByFolderPermissionLevel(folder_id, min_permission_level) {
+        const sql = `SELECT account_id FROM folder_permissions WHERE folder_id = ? AND permission_level >= ?`;
+
+        const [rows] = db.query(sql, [folder_id, min_permission_level]);
+
+        const account_ids = (() => {
+            let account_ids = [];
+            rows.forEach(row => {
+                account_ids.push(row.account_id);
+            });
+            return account_ids;
+        })();
+
+        return account_ids;
     }
 
 }
