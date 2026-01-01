@@ -1,5 +1,5 @@
 <style>
-    .menu_controller {
+    :host {
         box-sizing: border-box;
         display: flex;
         justify-content: center;
@@ -14,12 +14,9 @@
         cursor: pointer;
     }
 
-    .menu_controller:hover {
+    :host:hover {
         background-color: #1a1a1a;
     }
 </style>
 
-<div class="menu_controller">
-    <!-- slot for text -->
-    <slot></slot>
-</div>
+<slot></slot>

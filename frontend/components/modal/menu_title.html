@@ -1,5 +1,5 @@
 <style>
-    .menu_title {
+    :host {
         /* Fill the entire space of the menu-title html element (the element's size is defined in menu_header.html as ::slotted(menu-title){...}) */
         width: 100%;
         height: 70px;
@@ -18,6 +18,4 @@
     }
 </style>
 
-<div class="menu_title">
-    <slot></slot>
-</div>
+<slot></slot>

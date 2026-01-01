@@ -58,7 +58,7 @@ class Controller_CloseMenu extends MenuController {
     async connectedCallback() {
         await super.connectedCallback();
 
-        this.shadowRoot.querySelector('.menu_controller').textContent = 'x';
+        this.shadowRoot.host.textContent = 'x';
 
         this.addEventListener('click', () => {
             this.dispatchEvent(new CustomEvent('close-menu', {
