@@ -24,10 +24,10 @@ export class ListAddElement extends HTMLElement {
         const text_input = this.shadowRoot.querySelector('.text_input');
         text_input.placeholder = text;
 
-        this.shadowRoot.querySelector('#add').addEventListener('click', (event) => {
+        this.shadowRoot.querySelector('#add').addEventListener('click', async (event) => {
             // Add element
             const newElementText = this.shadowRoot.querySelector('.text_input').value;
-            this.shadowRoot.host.closest('list-input').appendElement(newElementText);
+            await this.shadowRoot.host.closest('list-input').appendElement(newElementText);
 
             // Scroll to bottom of body
             setTimeout(() => {

@@ -19,9 +19,9 @@ export class ListElement extends HTMLElement {
         text_input.value = text;
 
 
-        this.shadowRoot.querySelector('#del').addEventListener('click', (event) => {
+        this.shadowRoot.querySelector('#del').addEventListener('click', async (event) => {
             const listElement = this.shadowRoot.host;
-            this.shadowRoot.host.closest('list-input').removeElement(listElement);
+            await this.shadowRoot.host.closest('list-input').removeElement(listElement);
         });
     }
 }

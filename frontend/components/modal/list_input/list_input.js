@@ -7,6 +7,10 @@ export class ListInput extends HTMLElement {
         return true;
     }
 
+    #isValidStringExternalAsync = async () => {
+        return true;
+    }
+
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
@@ -47,7 +51,11 @@ export class ListInput extends HTMLElement {
                 const module = await import(verificationScriptSrc);
                 if (typeof module.isValidString !== 'function') throw new Error('Missing isValidString function.');
 
-                this.#isValidStringExternal = module.isValidString;
+                if (module.isValidString.constructor.name === "AsyncFunction") {
+                    this.#isValidStringExternalAsync = module.isValidString;
+                } else {
+                    this.#isValidStringExternal = module.isValidString;
+                }
 
             } catch (err) {
                 console.error('Module failed to load:', err);
@@ -55,11 +63,12 @@ export class ListInput extends HTMLElement {
         }
     }
 
-    isValidString(string) {
+    async isValidString(string) {
         if (typeof string !== 'string') return false;
 
         if (string.length > this.#maxStringLen) return false;
-        if (!this.#isValidStringExternal(string)) return false;
+
+        if (!this.#isValidStringExternal(string) || !await this.#isValidStringExternalAsync(string)) return false;
 
         return true;
     }
@@ -80,15 +89,15 @@ export class ListInput extends HTMLElement {
         return allElements.indexOf(element);
     }
 
-    prependElement(text) {
-        if (!this.isValidString(text)) return;
+    async prependElement(text) {
+        if (!await this.isValidString(text)) return;
 
         this.#elements.unshift(text);
         this.shadowRoot.host.prepend(this.getNewElement(text));
     }
 
-    addElement(index, text) {
-        if (!this.isValidString(text)) return;
+    async addElement(index, text) {
+        if (!await this.isValidString(text)) return;
         if (index < 0 || index >= this.#elements.length) return;
 
         if (index === this.#elements.length - 1) return this.appendElement(text);
@@ -100,15 +109,15 @@ export class ListInput extends HTMLElement {
         this.shadowRoot.host.insertBefore(this.getNewElement(text), this.shadowRoot.host.querySelectorAll('list-element')[index]);
     }
 
-    appendElement(text) {
-        if (!this.isValidString(text)) return;
+    async appendElement(text) {
+        if (!await this.isValidString(text)) return;
 
         this.#elements.push(text);
 
         this.shadowRoot.host.insertBefore(this.getNewElement(text), this.shadowRoot.host.querySelector('list-add-element'));
     }
 
-    removeElement(element) {
+    async removeElement(element) {
         const index = this.getElementIndex(element);
         if (index == null || index < 0 || index >= this.#elements.length) return;
 
