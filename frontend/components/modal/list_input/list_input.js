@@ -3,6 +3,10 @@ export class ListInput extends HTMLElement {
     #elements = []; // should be an array of strings
     #maxStringLen = 64;
 
+    #isValidStringExternal = () => {
+        return true;
+    }
+
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
@@ -21,6 +25,8 @@ export class ListInput extends HTMLElement {
             const list_element = list_elements[i];
             let element_text = list_element.innerText;
 
+            // ENFORCES MAX STRING LENGTH
+            // DOES NOT ENFORCE STRING VALIDITY FOR SLOTTED STRINGS
             if (element_text.length > this.#maxStringLen) {
                 element_text = element_text.slice(0, this.#maxStringLen);
                 list_elements[i].innerText = element_text;
@@ -32,6 +38,30 @@ export class ListInput extends HTMLElement {
         // slot is visible to this.shadowRoot but not this.shadowRoot.host
         // slotted elements are projected to the shadow dom, and slot is removed
         this.shadowRoot.querySelector('slot').hidden = false;
+
+
+        // Connect isValidString to src
+        const verificationScriptSrc = this.shadowRoot.host.getAttribute('verify-str-src');
+        if (verificationScriptSrc) {
+            try {
+                const module = await import(verificationScriptSrc);
+                if (typeof module.isValidString !== 'function') throw new Error('Missing isValidString function.');
+
+                this.#isValidStringExternal = module.isValidString;
+
+            } catch (err) {
+                console.error('Module failed to load:', err);
+            }
+        }
+    }
+
+    isValidString(string) {
+        if (typeof string !== 'string') return false;
+
+        if (string.length > this.#maxStringLen) return false;
+        if (!this.#isValidStringExternal(string)) return false;
+
+        return true;
     }
 
     getNewElement(text) {
@@ -51,15 +81,15 @@ export class ListInput extends HTMLElement {
     }
 
     prependElement(text) {
-        if (typeof text !== 'string' || text.length > this.#maxStringLen) throw new Error('Invalid string');
+        if (!this.isValidString(text)) return;
 
         this.#elements.unshift(text);
         this.shadowRoot.host.prepend(this.getNewElement(text));
     }
 
     addElement(index, text) {
-        if (typeof text !== 'string' || text.length > this.#maxStringLen) throw new Error('Invalid string');
-        if (index < 0 || index >= this.#elements.length) throw new Error('Invalid index');
+        if (!this.isValidString(text)) return;
+        if (index < 0 || index >= this.#elements.length) return;
 
         if (index === this.#elements.length - 1) return this.appendElement(text);
         if (index === 0) return this.prependElement(text);
@@ -71,7 +101,7 @@ export class ListInput extends HTMLElement {
     }
 
     appendElement(text) {
-        if (typeof text !== 'string' || text.length > this.#maxStringLen) throw new Error('Invalid string');
+        if (!this.isValidString(text)) return;
 
         this.#elements.push(text);
 
@@ -80,7 +110,7 @@ export class ListInput extends HTMLElement {
 
     removeElement(element) {
         const index = this.getElementIndex(element);
-        if (index == null || index < 0 || index >= this.#elements.length) throw new Error('Invalid index');
+        if (index == null || index < 0 || index >= this.#elements.length) return;
 
         this.#elements.splice(index, 1);
         element.remove();
