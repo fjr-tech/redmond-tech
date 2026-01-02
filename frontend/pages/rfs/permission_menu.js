@@ -15,19 +15,19 @@ export default class PermissionMenu {
                 
                 <menu-body>
                     <menu-text>Administrators</menu-text>
-                    <list-input verify-str-src="">
+                    <list-input verify-str-src="" id="admins">
                         <list-element>Element 1</list-element>
                         <list-element>Element 2</list-element>
                         <list-add-element>Add element</list-add-element>
                     </list-input>
                     <menu-text>Editors</menu-text>
-                    <list-input verify-str-src="">
+                    <list-input verify-str-src="" id="editors">
                         <list-element>Element 1</list-element>
                         <list-element>Element 2</list-element>
                         <list-add-element>Add element</list-add-element>
                     </list-input>
                     <menu-text>Viewers</menu-text>
-                    <list-input verify-str-src="">
+                    <list-input verify-str-src="" id="viewers">
                         <list-element>Element 1</list-element>
                         <list-element>Element 2</list-element>
                         <list-add-element>Add element</list-add-element>
