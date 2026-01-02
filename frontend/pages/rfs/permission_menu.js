@@ -1,13 +1,40 @@
 export default class PermissionMenu {
-    open() {
+    open(folder_name, folder_id) {
         const permissionMenuModal = document.createElement('div');
-        permissionMenuModal.classList.add('permission_menu_modal');
 
-        const permissionMenuContainer = document.createElement('div');
-        permissionMenuContainer.classList.add('permission_menu_container');
+        permissionMenuModal.innerHTML = `
+            <modal-menu>
+                <menu-controls>
+                    <close-menu></close-menu>
+                </menu-controls>
 
-
-        permissionMenuModal.append(permissionMenuContainer);
+                <menu-header>
+                    <menu-title>${folder_name}</menu-title>
+                    <menu-text>Permission menu</menu-text>
+                </menu-header>
+                
+                <menu-body>
+                    <menu-text>Administrators</menu-text>
+                    <list-input verify-str-src="">
+                        <list-element>Element 1</list-element>
+                        <list-element>Element 2</list-element>
+                        <list-add-element>Add element</list-add-element>
+                    </list-input>
+                    <menu-text>Editors</menu-text>
+                    <list-input verify-str-src="">
+                        <list-element>Element 1</list-element>
+                        <list-element>Element 2</list-element>
+                        <list-add-element>Add element</list-add-element>
+                    </list-input>
+                    <menu-text>Viewers</menu-text>
+                    <list-input verify-str-src="">
+                        <list-element>Element 1</list-element>
+                        <list-element>Element 2</list-element>
+                        <list-add-element>Add element</list-add-element>
+                    </list-input>
+                </menu-body>
+            </modal-menu>
+        `;
 
 
         document.body.append(permissionMenuModal);

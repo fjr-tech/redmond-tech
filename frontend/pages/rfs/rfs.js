@@ -548,7 +548,7 @@ document.addEventListener('contextmenu', (event) => {
         if (folder_path.length === 1) {
             options.push({option_type: 'button', text: "Edit Permissions", id: 'open_permission_controller', callback: () => {
                 closeContextMenu();
-                permission_menu.open();
+                permission_menu.open(resource_name, selected_resources[0].id);
             }});
         }
 

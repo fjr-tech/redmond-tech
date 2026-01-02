@@ -123,8 +123,12 @@ export class ListInput extends HTMLElement {
     async prependElement(text) {
         if (!await this.isValidString(text)) return;
 
+        const newElement = this.getNewElement(text);
+
         this.#elements.unshift(text);
-        this.shadowRoot.host.prepend(this.getNewElement(text));
+        this.shadowRoot.host.prepend(newElement);
+
+        return newElement;
     }
 
     async addElement(index, text) {
@@ -137,7 +141,11 @@ export class ListInput extends HTMLElement {
         // insert at index, remove 0, insert element
         this.#elements.splice(index, 0, text);
 
-        this.shadowRoot.host.insertBefore(this.getNewElement(text), this.shadowRoot.host.querySelectorAll('list-element')[index]);
+        const newElement = this.getNewElement(text);
+
+        this.shadowRoot.host.insertBefore(newElement, this.shadowRoot.host.querySelectorAll('list-element')[index]);
+
+        return newElement;
     }
 
     async appendElement(text) {
@@ -145,7 +153,11 @@ export class ListInput extends HTMLElement {
 
         this.#elements.push(text);
 
-        this.shadowRoot.host.insertBefore(this.getNewElement(text), this.shadowRoot.host.querySelector('list-add-element'));
+        const newElement = this.getNewElement(text);
+
+        this.shadowRoot.host.insertBefore(newElement, this.shadowRoot.host.querySelector('list-add-element'));
+
+        return newElement;
     }
 
     async removeElement(element) {

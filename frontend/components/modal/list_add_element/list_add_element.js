@@ -27,11 +27,12 @@ export class ListAddElement extends HTMLElement {
         this.shadowRoot.querySelector('#add').addEventListener('click', async (event) => {
             // Add element
             const newElementText = this.shadowRoot.querySelector('.text_input').value;
-            await this.shadowRoot.host.closest('list-input').appendElement(newElementText);
+            const newElement = await this.shadowRoot.host.closest('list-input').appendElement(newElementText);
 
             // Scroll to bottom of body
             setTimeout(() => {
-                this.shadowRoot.host.closest('menu-body').scrollToEnd();
+                // this.shadowRoot.host.closest('menu-body').scrollToEnd();
+                newElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 50);
         
         });
